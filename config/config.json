@@ -1,0 +1,7 @@
+{
+  "development": {
+    "host": "mongodb://127.0.0.1:27017/metareum-ecosystem",
+    "infuraId": "26c92d2974e94a8eb48b08b7a15c001f",
+    "chainId": 4
+  }
+}

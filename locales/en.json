@@ -1,0 +1,20 @@
+{
+  "Home": "Home",
+  "My Account": "My Account",
+  "Success": "Success",
+  "REGISTER_SUCCESS": "Register successful!",
+  "UNABLE_TO_REGISTER": "Unable to register!",
+  "RETRIEVE_SUCCESS": "Retrieve successful",
+  "UNABLE_TO_GET_INFO": "Unable to retrieve info!",
+  "UNABLE_TO_DELETE": "Unable to delete",
+  "DELETE_SUCCESS": "Delete successful",
+  "UNABLE_TO_UPDATE": "Unable to update",
+  "UPDATE_SUCCESS": "Update successful",
+  "UNABLE_TO_FIND_STAKE": "Unable find this id manager",
+  "USER_ALREADY_EXIST": "User Already Exist. Please Login",
+  "TOKEN_AUTH_REQUIRE": "A token is required for authentication",
+  "INVALID_TOKEN": "Invalid Token",
+  "INVALID_SIGNATURE": "Message signature is invalid",
+  "INVALID_PROJECT_OF_USER": "Invalid project of user",
+  "NOT_ENOUGH_PERMISSION": "Not enough permission"
+}
