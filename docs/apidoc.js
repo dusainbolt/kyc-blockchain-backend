@@ -4,9 +4,9 @@ const projectsPath = require('./projects');
 module.exports = {
   openapi: "3.0.0",
   info: {
-    title: "Metareum API",
+    title: "KYCPlatform API",
     version: "1.0.0",
-    description: "APIs for metareum ecosystem",
+    description: "APIs for KYCPlatform",
     termsOfService: "http://example.com/terms/",
     contact: {
       name: "API Support",
