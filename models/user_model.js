@@ -6,6 +6,7 @@ const UserSchema = new Schema(
   {
     address: {
       type: String,
+      unique: true,
       required: false,
     },
     role: {
