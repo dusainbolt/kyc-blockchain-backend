@@ -12,7 +12,10 @@ const KycSchema = new Schema(
         email: {
             type: String,
             required: true,
-            unique: true
+            index: {
+                unique: true,
+                collation: { locale: 'en', strength: 2 },
+              },
         },
         firstName: {
             type: String,
