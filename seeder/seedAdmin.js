@@ -8,6 +8,10 @@ const config = require("../config/config.json")[env];
 
 const user = [
   {
+    address: "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199",
+    role: 1
+  },
+  {
     address: "0xac4540E3EeB8e55931735dd1C064C2ba50ac44e0",
     role: 1
   },
