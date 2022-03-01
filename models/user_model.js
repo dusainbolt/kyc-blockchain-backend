@@ -1,11 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { DB_STATUS, USER_ROLE } = require('../utils/consts');
+const { DB_STATUS, USER_ROLE } = require("../utils/consts");
 
 const UserSchema = new Schema(
   {
     address: {
       type: String,
+      unique: true,
       required: false,
     },
     role: {
@@ -19,16 +20,16 @@ const UserSchema = new Schema(
       enum: DB_STATUS,
       default: DB_STATUS.ACTIVE,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+    // createdAt: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
+    // updatedAt: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
   },
-  { collection: 'users' }
+  { usePushEach: true, timestamps: true }
 );
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);
