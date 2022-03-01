@@ -7,24 +7,20 @@ const ProjectSchema = new Schema(
     name: {
       type: String,
       required: true,
-      index: {
-        unique: true,
-        collation: { locale: 'en', strength: 2 },
-      },
+      trim: true
     },
-    note: {
+    apiKey: {
       type: String,
-      required: false,
-    },
-    adminId: {
-      type: Schema.Types.ObjectId, 
       required: true,
-      ref: 'User',
     },
     status: {
-      type: String,
+      type: Number,
       enum: DB_STATUS,
       default: DB_STATUS.ACTIVE,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
     },
     createdAt: {
       type: Date,
@@ -35,8 +31,7 @@ const ProjectSchema = new Schema(
       default: Date.now,
     },
   },
-  {usePushEach: true},
+  { collection: 'projects' }
 );
-ProjectSchema.index({ name: 1 }, { background: true });
 
 module.exports = mongoose.model('Project', ProjectSchema);

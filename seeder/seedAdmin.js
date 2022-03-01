@@ -6,18 +6,10 @@ const mongoose = require("mongoose");
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config.json")[env];
 
-const users = [
+const user = [
   {
-    username: "superAdmin",
-    email: "super_admin@gmail.com",
-    password: "123456",
-    isAdmin: true,
-  },
-  {
-    username: "projectAdmin",
-    email: "project_admin@gmail.com",
-    password: "123456",
-    isAdmin: true,
+    address: "0xac4540E3EeB8e55931735dd1C064C2ba50ac44e0",
+    role: 1
   },
 ];
 
@@ -32,8 +24,8 @@ mongoose.connect(config.host, {
 //after you make sure you seeded all the users, disconnect automatically
 async function seederUsers() {
   try {
-    const usersData = await UserModel.insertMany(users);
-    if (usersData.length === users.length) {
+    const usersData = await UserModel.insertMany(user);
+    if (usersData.length === user.length) {
       console.log("DONE!");
       mongoose.disconnect();
     }

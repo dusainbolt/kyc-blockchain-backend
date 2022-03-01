@@ -73,6 +73,6 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-eventListener();
+//eventListener();
 
 module.exports = app;
