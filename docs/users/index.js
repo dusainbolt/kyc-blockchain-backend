@@ -6,22 +6,22 @@ const userDelete = require("./delete_user");
 const searchUser = require("./search_user");
 
 module.exports = {
-  "/user/create": {
-    ...createUser,
-  },
-  "/user/get-info": {
-    ...getUserInfo,
-  },
+  // "/user/create": {
+  //   ...createUser,
+  // },
+  // "/user/get-info": {
+  //   ...getUserInfo,
+  // },
   "/user/login": {
     ...userLogin,
   },
-  "/user/update": {
-    ...userUpdate,
-  },
-  "/user/delete": {
-    ...userDelete,
-  },
-  "/user/search": {
-    ...searchUser,
-  },
+  // "/user/update": {
+  //   ...userUpdate,
+  // },
+  // "/user/delete": {
+  //   ...userDelete,
+  // },
+  // "/user/search": {
+  //   ...searchUser,
+  // },
 };
