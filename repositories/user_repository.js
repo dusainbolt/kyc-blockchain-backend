@@ -1,21 +1,21 @@
-const { UserModel } = require("../models");
-const consts = require("../utils/consts");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { UserModel } = require('../models');
+// const consts = require('../utils/consts');
+// const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const Web3 = require("web3");
-const ObjectID = require("mongodb").ObjectID;
-const BN = require("ethers").BigNumber;
-const AES = require("crypto-js").AES;
-const Utf8 = require("crypto-js").enc.Utf8;
+const Web3 = require('web3');
+const ObjectID = require('mongodb').ObjectID;
+const BN = require('ethers').BigNumber;
+const AES = require('crypto-js').AES;
+const Utf8 = require('crypto-js').enc.Utf8;
 
 const web3 = new Web3();
 
 module.exports = {
   create: async function (newAccountInfo) {
     try {
-      let accountInfo = await UserModel.create(newAccountInfo);
+      const accountInfo = await UserModel.create(newAccountInfo);
 
       // Create token
       const token = jwt.sign(
@@ -48,12 +48,11 @@ module.exports = {
             expiresIn: process.env.EXPIRED_JWT_TOKEN,
           }
         );
-        
-        //return user(address, token)
+
         user = {
           address: user.address,
           token: token,
-        }
+        };
 
         return user;
       }
@@ -84,7 +83,7 @@ module.exports = {
       newData.updatedAt = new Date();
 
       // update and return the result
-      let updateResult = await UserModel.updateOne(id, { $set: newData });
+      const updateResult = await UserModel.updateOne(id, { $set: newData });
       return updateResult;
     } catch (error) {
       _logger.error(new Error(error));
@@ -101,7 +100,7 @@ module.exports = {
 
   count: async function (conditions) {
     try {
-      let userCount = await UserModel.countDocuments(conditions);
+      const userCount = await UserModel.countDocuments(conditions);
       return userCount;
     } catch (error) {
       _logger.error(new Error(error));
@@ -111,8 +110,8 @@ module.exports = {
 
   search: async function (conditions, pagination) {
     try {
-      let userList = await UserModel.find(conditions)
-        .select("_id username email address isAdmin status createdAt updatedAt")
+      const userList = await UserModel.find(conditions)
+        .select('_id username email address isAdmin status createdAt updatedAt')
         .skip((pagination.page - 1) * pagination.pageSize)
         .limit(pagination.pageSize)
         .sort({ createdAt: -1 });
@@ -125,7 +124,7 @@ module.exports = {
 
   validateAdmin: async function (userId) {
     try {
-      let user = await UserModel.findOne({ _id: new ObjectID(userId) });
+      const user = await UserModel.findOne({ _id: new ObjectID(userId) });
       if (user.isAdmin) {
         return true;
       } else {
@@ -144,24 +143,24 @@ module.exports = {
 
     const correctMsg = originalMessage === process.env.MESSAGE_SIGNATURE;
     const differentTime = BN.from(Date.now()).div(1000).sub(dateTime);
-    
+
     if (
       !correctMsg ||
       !differentTime.gte(0) ||
       !differentTime.lte(process.env.EXPIRED_MESSAGE_SIGN)
     ) {
-      return { result: false, message: "INVALID_SIGNATURE" };
+      return { result: false, message: 'INVALID_SIGNATURE' };
     }
 
     // verify signature
     const recover = await web3.eth.accounts.recover(message, signature);
     const recoverConvert = web3.utils.toChecksumAddress(recover);
     address = web3.utils.toChecksumAddress(address);
-    console.log("recover: ", recover);
+    console.log('recover: ', recover);
     if (recoverConvert && recoverConvert === address) {
-      return { result: true, message: "Success" };
+      return { result: true, message: 'Success' };
     } else {
-      return { result: false, message: "INVALID_SIGNATURE" };
+      return { result: false, message: 'INVALID_SIGNATURE' };
     }
   },
 };

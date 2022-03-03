@@ -7,7 +7,7 @@
 // const projectRepository = require('../repositories/project_repository');
 // const ObjectID = require('mongodb').ObjectID;
 
-module.exports = ({
+module.exports = {
   classname: 'ProjectController',
 
   // create: async (req, res, next) => {
@@ -169,5 +169,4 @@ module.exports = ({
   //     next(error);
   //   }
   // },
-
-});
+};

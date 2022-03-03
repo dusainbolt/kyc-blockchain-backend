@@ -29,7 +29,7 @@ const UserSchema = new Schema(
     //   default: Date.now,
     // },
   },
-  { usePushEach: true ,timestamps: true }
+  { usePushEach: true, timestamps: true }
 );
 
 module.exports = mongoose.model('User', UserSchema);

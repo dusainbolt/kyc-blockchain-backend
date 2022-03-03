@@ -1,13 +1,13 @@
- const { validateRouter, paginationGenerator } = require("../utils/helper");
+const { validateRouter } = require('../utils/helper');
 // const consts = require("../utils/consts");
- const { handlerSuccess, handlerError } = require("../utils/response_handler");
+const { handlerSuccess, handlerError } = require('../utils/response_handler');
 // const logger = require("../utils/logger");
 
- const userRepository = require("../repositories/user_repository");
+const userRepository = require('../repositories/user_repository');
 // const ObjectID = require("mongodb").ObjectID;
 
 module.exports = {
-  classname: "UserController",
+  classname: 'UserController',
 
   // register: async (req, res, next) => {
   //   // validate the input parameters
@@ -58,22 +58,21 @@ module.exports = {
       return handlerError(req, res, validate);
     }
 
-    
-    //valid parameters
+    // valid parameters
     try {
       // prepare to login
-      let accountLogin = {
+      const accountLogin = {
         address: req.body.address,
         messageHash: req.body.messageHash,
         signature: req.body.signature,
       };
       // retrieve user record
-      let user = await userRepository.findOneLogin(accountLogin);
+      const user = await userRepository.findOneLogin(accountLogin);
 
       if (user) {
-        return handlerSuccess(req, res, user, res.__("Success"));
+        return handlerSuccess(req, res, user, res.__('Success'));
       } else {
-        return handlerError(req, res, res.__("UNABLE_TO_GET_INFO"));
+        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
       }
     } catch (error) {
       _logger.error(new Error(error));

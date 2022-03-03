@@ -1,55 +1,55 @@
 module.exports = {
   get: {
-    tags: ["Projects"],
+    tags: ['Projects'],
     security: [
       {
         ApiKeyAuth: [],
       },
     ],
-    summary: "Search info of a project",
-    operationId: "searchProjectInfo",
+    summary: 'Search info of a project',
+    operationId: 'searchProjectInfo',
     parameters: [
       {
-        name: "name",
-        in: "query",
-        description: "projectname of project",
+        name: 'name',
+        in: 'query',
+        description: 'projectname of project',
       },
       {
-        name: "note",
-        in: "query",
-        description: "note of project",
+        name: 'note',
+        in: 'query',
+        description: 'note of project',
       },
       {
-        name: "page",
-        in: "query",
-        description: "current page want to show",
+        name: 'page',
+        in: 'query',
+        description: 'current page want to show',
       },
       {
-        name: "pageSize",
-        in: "query",
-        description: "Amount record on one page",
+        name: 'pageSize',
+        in: 'query',
+        description: 'Amount record on one page',
       },
     ],
     responses: {
       200: {
-        description: "Search user successfuly",
+        description: 'Search user successfuly',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              $ref: "#/components/schemas/ProjectResponse",
+              $ref: '#/components/schemas/ProjectResponse',
             },
           },
         },
       },
       404: {
-        description: "User is not found",
+        description: 'User is not found',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              $ref: "#/components/schemas/Error",
+              $ref: '#/components/schemas/Error',
               example: {
-                message: "We can't find the user",
-                internal_code: "Invalid id",
+                message: `We can't find the user`,
+                internal_code: 'Invalid id',
               },
             },
           },

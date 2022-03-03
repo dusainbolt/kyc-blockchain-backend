@@ -8,7 +8,7 @@ const ProjectSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      trim: true
+      trim: true,
     },
     apiKey: {
       type: String,
@@ -21,7 +21,7 @@ const ProjectSchema = new Schema(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     // createdAt: {
     //   type: Date,
@@ -32,7 +32,7 @@ const ProjectSchema = new Schema(
     //   default: Date.now,
     // },
   },
-  { usePushEach: true, timestamps: true}
+  { usePushEach: true, timestamps: true }
 );
 
 module.exports = mongoose.model('Project', ProjectSchema);
