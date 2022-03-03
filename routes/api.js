@@ -1,16 +1,16 @@
-var express = require("express");
-var router = express.Router();
-// var {
-//   userController,
-//   projectController,
-// } = require("../controllers");
+const express = require("express");
+const router = express.Router();
+const {
+  userController,
+  projectController,
+} = require("../controllers");
 
-// var { 
-//   validateUser,
-//   validateProject
-// } = require("../requests");
+const { 
+  validateUser,
+  validateProject
+} = require("../requests");
 
-// var auth = require("../middleware/auth");
+// const auth = require("../middleware/auth");
 
 /* User APIs */
 // router.post("/user/create", validateUser.register(), auth, userController.register);
@@ -20,7 +20,7 @@ var router = express.Router();
 // router.delete("/user/delete", validateUser.retrieve(), auth, userController.delete);
 // router.get("/user/search", auth, userController.search);
 // router.post("/user/verify-sign", validateUser.verifySign(), userController.verifySign);
-
+router.post("/user/login", validateUser.verifySign(), userController.login);
 
 /* Project APIs */
 // router.post("/project/create", validateProject.create(), auth, projectController.create);

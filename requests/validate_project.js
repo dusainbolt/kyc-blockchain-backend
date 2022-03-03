@@ -1,6 +1,6 @@
-var {body, query, validationResult, param} = require('express-validator');
-var { ProjectModel, UserModel } = require('../models');
-var ObjectID = require('mongodb').ObjectID;
+const {body, query, validationResult, param} = require('express-validator');
+const { ProjectModel, UserModel } = require('../models');
+const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ValidateProject',

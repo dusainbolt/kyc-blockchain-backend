@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-var { UserModel } = require("../models");
+const { UserModel } = require("../models");
 const mongoose = require("mongoose");
 
 const env = process.env.NODE_ENV || "development";

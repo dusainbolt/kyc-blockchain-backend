@@ -1,7 +1,7 @@
-var { body, query, validationResult, param } = require("express-validator");
-var { UserModel } = require("../models");
-var ObjectID = require("mongodb").ObjectID;
-var web3 = require("web3");
+const { body, query, validationResult, param } = require("express-validator");
+const { UserModel } = require("../models");
+const ObjectID = require("mongodb").ObjectID;
+const web3 = require("web3");
 
 module.exports = {
   classname: "ValidateUser",
@@ -107,8 +107,8 @@ module.exports = {
             ? Promise.resolve(true)
             : Promise.reject("Invalid address");
         }),
-      body("msg").trim().not().isEmpty().withMessage("Missing msg parameter."),
-      body("sig").trim().not().isEmpty().withMessage("Missing sig parameter."),
+      body("messageHash").trim().not().isEmpty().withMessage("Missing messageHash parameter."),
+      body("signature").trim().not().isEmpty().withMessage("Missing signature parameter."),
     ];
   },
 };
