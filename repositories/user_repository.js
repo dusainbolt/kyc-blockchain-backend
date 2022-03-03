@@ -38,23 +38,23 @@ module.exports = {
 
   findOneLogin: async function (conditions) {
     try {
-      let user = await UserModel.findOne({ email: conditions.email });
+      let user = await UserModel.findOne({ address: conditions.address });
 
-      if (user && (await bcrypt.compare(conditions.password, user.password))) {
+      if (user) {
         // Create token
         const token = jwt.sign(
-          { userId: user._id, email: conditions.email },
+          { userId: user._id, adress: user.address, role: user.role },
           process.env.JWT_SECRET,
           {
             expiresIn: process.env.EXPIRED_JWT_TOKEN,
           }
         );
-
-        // save user token
-        user.token = token;
-
-        // hide the password field before returning
-        user.password = "";
+        
+        //return user(address, token)
+        user = {
+          address: user.address,
+          token: token,
+        }
 
         return user;
       }

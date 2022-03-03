@@ -1,55 +1,15 @@
 module.exports = {
-  Id: {
-    type: "string",
-    description: "An id of a user",
-    example: "620dcd1d5041cd381360c186",
-  },
   UserResponse: {
     type: "object",
     properties: {
-      _id: {
-        type: "integer",
-        description: "The Auto-generated id of a user",
-      },
-      username: {
-        type: "string",
-        description: "name of user",
-      },
-      email: {
-        type: "string",
-        description: "email of user",
-      },
       address: {
         type: "string",
-        description: "address of user",
-      },
-      projects: {
-        type: "array",
-        items: {
-          type: "string",
-          properties: {
-            id: {
-              type: "string",
-            },
-          },
-        },
+        description: "metamask address of user",
       },
       token: {
         type: "string",
         description: "token verify when access main function",
-      },
-      isAdmin: {
-        type: "boolean",
-        description: "permission of supper admin",
-      },
-      createdAt: {
-        type: "string",
-        description: "times create record database",
-      },
-      updatedAt: {
-        type: "string",
-        description: "times change record database recently",
-      },
+      }
     },
   },
   UserCreate: {
@@ -81,18 +41,23 @@ module.exports = {
   UserLogin: {
     type: "object",
     properties: {
-      email: {
+      address: {
         type: "string",
-        description: "email of user",
-        example: "admin@gmail.com",
+        description: "metamask address of user",
+        example: "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199",
       },
-      password: {
+      signature: {
         type: "string",
-        description: "password create user",
+        description: "signature",
+        example: "123456",
+      },
+      messageHash: {
+        type: "string",
+        description: "message hash",
         example: "123456",
       },
     },
-    required: ["email", "password"],
+    required: ["address", "signature", "messageHash"],
   },
   UserUpdate: {
     type: "object",

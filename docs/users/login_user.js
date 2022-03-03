@@ -26,6 +26,6 @@ module.exports = {
           '500':{
               description: 'Server error'
           }
-      }
+      },
   }
 }

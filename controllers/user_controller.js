@@ -1,9 +1,9 @@
-// var { validateRouter, paginationGenerator } = require("../utils/helper");
+ var { validateRouter, paginationGenerator } = require("../utils/helper");
 // var consts = require("../utils/consts");
-// var { handlerSuccess, handlerError } = require("../utils/response_handler");
+ var { handlerSuccess, handlerError } = require("../utils/response_handler");
 // var logger = require("../utils/logger");
 
-// var userRepository = require("../repositories/user_repository");
+ var userRepository = require("../repositories/user_repository");
 // var ObjectID = require("mongodb").ObjectID;
 
 module.exports = {
@@ -49,35 +49,37 @@ module.exports = {
   //   }
   // },
 
-  // login: async (req, res, next) => {
-  //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  login: async (req, res, next) => {
+    // validate the input parameters
+    const validate = validateRouter(req, res);
 
-  //   // handle the error, stop
-  //   if (validate) {
-  //     return handlerError(req, res, validate);
-  //   }
+    // handle the error, stop
+    if (validate) {
+      return handlerError(req, res, validate);
+    }
 
-  //   // valid parameters
-  //   try {
-  //     // prepare to login
-  //     let accountLogin = {
-  //       email: req.body.email,
-  //       password: req.body.password,
-  //     };
-  //     // retrieve user record
-  //     let user = await userRepository.findOneLogin(accountLogin);
+    
+    //valid parameters
+    try {
+      // prepare to login
+      let accountLogin = {
+        address: req.body.address,
+        messageHash: req.body.messageHash,
+        signature: req.body.signature,
+      };
+      // retrieve user record
+      let user = await userRepository.findOneLogin(accountLogin);
 
-  //     if (user) {
-  //       return handlerSuccess(req, res, user, res.__("RETRIEVE_SUCCESS"));
-  //     } else {
-  //       return handlerError(req, res, res.__("UNABLE_TO_GET_INFO"));
-  //     }
-  //   } catch (error) {
-  //     logger.error(new Error(error));
-  //     next(error);
-  //   }
-  // },
+      if (user) {
+        return handlerSuccess(req, res, user, res.__("Success"));
+      } else {
+        return handlerError(req, res, res.__("UNABLE_TO_GET_INFO"));
+      }
+    } catch (error) {
+      logger.error(new Error(error));
+      next(error);
+    }
+  },
 
   // retrieve: async (req, res, next) => {
   //   // validate the input parameters
