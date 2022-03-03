@@ -1,10 +1,10 @@
- var { validateRouter, paginationGenerator } = require("../utils/helper");
-// var consts = require("../utils/consts");
- var { handlerSuccess, handlerError } = require("../utils/response_handler");
-// var logger = require("../utils/logger");
+ const { validateRouter, paginationGenerator } = require("../utils/helper");
+// const consts = require("../utils/consts");
+ const { handlerSuccess, handlerError } = require("../utils/response_handler");
+// const logger = require("../utils/logger");
 
- var userRepository = require("../repositories/user_repository");
-// var ObjectID = require("mongodb").ObjectID;
+ const userRepository = require("../repositories/user_repository");
+// const ObjectID = require("mongodb").ObjectID;
 
 module.exports = {
   classname: "UserController",
@@ -44,7 +44,7 @@ module.exports = {
   //       return handlerError(req, res, res.__("UNABLE_TO_REGISTER"));
   //     }
   //   } catch (error) {
-  //     logger.error(new Error(error));
+  //     _logger.error(new Error(error));
   //     next(error);
   //   }
   // },
@@ -76,7 +76,7 @@ module.exports = {
         return handlerError(req, res, res.__("UNABLE_TO_GET_INFO"));
       }
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       next(error);
     }
   },
@@ -113,7 +113,7 @@ module.exports = {
   //       return handlerError(req, res, res.__("UNABLE_TO_GET_INFO"));
   //     }
   //   } catch (error) {
-  //     logger.error(new Error(error));
+  //     _logger.error(new Error(error));
   //     next(error);
   //   }
   // },
@@ -153,7 +153,7 @@ module.exports = {
   //       return handlerError(req, res, res.__("UNABLE_TO_UPDATE"));
   //     }
   //   } catch (error) {
-  //     logger.error(new Error(error));
+  //     _logger.error(new Error(error));
   //     next(error);
   //   }
   // },
@@ -184,7 +184,7 @@ module.exports = {
   //       return handlerError(req, res, res.__("UNABLE_TO_DELETE"));
   //     }
   //   } catch (error) {
-  //     logger.error(new Error(error));
+  //     _logger.error(new Error(error));
   //     next(error);
   //   }
   // },
@@ -236,7 +236,7 @@ module.exports = {
   //       return handlerError(req, res, res.__("UNABLE_TO_GET_INFO"));
   //     }
   //   } catch (error) {
-  //     logger.error(new Error(error));
+  //     _logger.error(new Error(error));
   //     next(error);
   //   }
   // },
@@ -258,7 +258,7 @@ module.exports = {
   //     }
   //     return handlerSuccess(req, res, { address }, res.__(verify.message));
   //   } catch (error) {
-  //     logger.error(new Error(error));
+  //     _logger.error(new Error(error));
   //     next(error);
   //   }
   // },

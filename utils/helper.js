@@ -12,7 +12,7 @@ exports._errorFormatter = (errors) => {
 
 exports.validateRouter = (req, res) => {
   let errorMsg = undefined;
-  var errors = validationResult(req);
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMsg = this._errorFormatter(errors.array());
   }

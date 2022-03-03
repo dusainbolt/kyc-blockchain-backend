@@ -1,16 +1,16 @@
-var express = require("express");
-var router = express.Router();
-var {
+const express = require("express");
+const router = express.Router();
+const {
   userController,
   projectController,
 } = require("../controllers");
 
-var { 
+const { 
   validateUser,
   validateProject
 } = require("../requests");
 
-// var auth = require("../middleware/auth");
+// const auth = require("../middleware/auth");
 
 /* User APIs */
 // router.post("/user/create", validateUser.register(), auth, userController.register);

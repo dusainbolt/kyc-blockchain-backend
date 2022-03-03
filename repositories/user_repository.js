@@ -1,17 +1,16 @@
-var { UserModel } = require("../models");
-var consts = require("../utils/consts");
-var mongoose = require("mongoose");
-var logger = require("../utils/logger");
-var bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const { UserModel } = require("../models");
+const consts = require("../utils/consts");
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-var Web3 = require("web3");
-var ObjectID = require("mongodb").ObjectID;
-var BN = require("ethers").BigNumber;
-var AES = require("crypto-js").AES;
-var Utf8 = require("crypto-js").enc.Utf8;
+const Web3 = require("web3");
+const ObjectID = require("mongodb").ObjectID;
+const BN = require("ethers").BigNumber;
+const AES = require("crypto-js").AES;
+const Utf8 = require("crypto-js").enc.Utf8;
 
-var web3 = new Web3();
+const web3 = new Web3();
 
 module.exports = {
   create: async function (newAccountInfo) {
@@ -32,7 +31,7 @@ module.exports = {
 
       return accountInfo;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -59,7 +58,7 @@ module.exports = {
         return user;
       }
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -67,7 +66,7 @@ module.exports = {
     try {
       return await UserModel.findOne(conditions);
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -88,7 +87,7 @@ module.exports = {
       let updateResult = await UserModel.updateOne(id, { $set: newData });
       return updateResult;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -96,7 +95,7 @@ module.exports = {
     try {
       return await UserModel.deleteOne(conditions);
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -105,7 +104,7 @@ module.exports = {
       let userCount = await UserModel.countDocuments(conditions);
       return userCount;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return 0;
     }
   },
@@ -119,7 +118,7 @@ module.exports = {
         .sort({ createdAt: -1 });
       return userList;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return [];
     }
   },
@@ -133,7 +132,7 @@ module.exports = {
         return false;
       }
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return false;
     }
   },

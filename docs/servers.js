@@ -1,7 +1,7 @@
 module.exports = {
   servers:[
       {
-          url:"http://localhost:3001/api",
+          url:"http://localhost:8000/api",
           description:"Local server"
       },
       {

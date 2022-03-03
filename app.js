@@ -1,22 +1,23 @@
 require("dotenv").config();
 
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
-var i18n = require("i18n");
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const cors = require("cors");
+const i18n = require("i18n");
 const mongoose = require("mongoose");
 const swaggerUi = require("swagger-ui-express");
 const docs = require("./docs");
 const eventListener = require("./event");
 
-var apiRouter = require("./routes/api");
+const apiRouter = require("./routes/api");
 
-var app = express();
+const app = express();
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/config/config.json")[env];
+global._config = require(__dirname + "/config/config.json")[env];
+global._logger = require("./utils/logger");
 
 // enabling cors
 app.use(cors());
@@ -42,7 +43,7 @@ i18n.configure({
 });
 
 // connect to mongodb
-mongoose.connect(config.host, {
+mongoose.connect(_config.host, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
