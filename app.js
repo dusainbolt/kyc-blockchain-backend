@@ -1,22 +1,23 @@
-require("dotenv").config();
+require('dotenv').config();
 
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
-var i18n = require("i18n");
-const mongoose = require("mongoose");
-const swaggerUi = require("swagger-ui-express");
-const docs = require("./docs");
-const eventListener = require("./event");
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+const i18n = require('i18n');
+const mongoose = require('mongoose');
+const swaggerUi = require('swagger-ui-express');
+const docs = require('./docs');
+// const eventListener = require('./event');
 
-var apiRouter = require("./routes/api");
+const apiRouter = require('./routes/api');
 
-var app = express();
-const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/config/config.json")[env];
+const app = express();
+const env = process.env.NODE_ENV || 'development';
+global._config = require(__dirname + '/config/config.json')[env];
+global._logger = require('./utils/logger');
 
 // enabling cors
 app.use(cors());
@@ -25,38 +26,38 @@ app.use(cors());
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'pug');
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // initialize language package
 app.use(i18n.init);
 
 // config language package
 i18n.configure({
-  locales: ["en", "vi", "jp"],
-  directory: __dirname + "/locales",
-  defaultLocale: "en",
+  locales: ['en', 'vi', 'jp'],
+  directory: __dirname + '/locales',
+  defaultLocale: 'en',
 });
 
 // connect to mongodb
-mongoose.connect(config.host, {
+mongoose.connect(_config.host, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
 
-app.use("/api", apiRouter);
+app.use('/api', apiRouter);
 app.use(
-  "/api-docs",
+  '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(docs, { explorer: true })
 );
 
 // serve static files
-app.use("/assets", express.static("public"));
+app.use('/assets', express.static('public'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -67,12 +68,12 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
 });
 
-//eventListener();
+// eventListener();
 
 module.exports = app;

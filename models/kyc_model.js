@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { DB_STATUS, KYC_GENDER, ID_IMAGE } = require("../utils/consts");
+const mongoose = require('mongoose');
+const { DB_STATUS, KYC_GENDER, ID_IMAGE } = require('../utils/consts');
 const Schema = mongoose.Schema;
 
 const KycSchema = new Schema(
@@ -8,7 +8,7 @@ const KycSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
       unique: true,
-      ref: "User",
+      ref: 'User',
     },
     email: {
       type: String,
@@ -73,4 +73,4 @@ const KycSchema = new Schema(
   { usePushEach: true, timestamps: true }
 );
 
-module.exports = mongoose.model("KYC", KycSchema);
+module.exports = mongoose.model('KYC', KycSchema);

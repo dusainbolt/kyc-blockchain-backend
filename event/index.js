@@ -6,7 +6,7 @@ const config = require("../config/config.json")[env];
 
 const ABIJson = require("../contracts/KYCPlatform.json");
 
-var contractAddress = config.contractAddress;
+const contractAddress = config.contractAddress;
 
 const web3 = new Web3("ws://localhost:8545");
 

@@ -1,22 +1,21 @@
-var { UserModel } = require("../models");
-var consts = require("../utils/consts");
-var mongoose = require("mongoose");
-var logger = require("../utils/logger");
-var bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const { UserModel } = require('../models');
+// const consts = require('../utils/consts');
+// const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-var Web3 = require("web3");
-var ObjectID = require("mongodb").ObjectID;
-var BN = require("ethers").BigNumber;
-var AES = require("crypto-js").AES;
-var Utf8 = require("crypto-js").enc.Utf8;
+const Web3 = require('web3');
+const ObjectID = require('mongodb').ObjectID;
+const BN = require('ethers').BigNumber;
+const AES = require('crypto-js').AES;
+const Utf8 = require('crypto-js').enc.Utf8;
 
-var web3 = new Web3();
+const web3 = new Web3();
 
 module.exports = {
   create: async function (newAccountInfo) {
     try {
-      let accountInfo = await UserModel.create(newAccountInfo);
+      const accountInfo = await UserModel.create(newAccountInfo);
 
       // Create token
       const token = jwt.sign(
@@ -32,34 +31,33 @@ module.exports = {
 
       return accountInfo;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
   findOneLogin: async function (conditions) {
     try {
-      let user = await UserModel.findOne({ email: conditions.email });
+      let user = await UserModel.findOne({ address: conditions.address });
 
-      if (user && (await bcrypt.compare(conditions.password, user.password))) {
+      if (user) {
         // Create token
         const token = jwt.sign(
-          { userId: user._id, email: conditions.email },
+          { userId: user._id, adress: user.address, role: user.role },
           process.env.JWT_SECRET,
           {
             expiresIn: process.env.EXPIRED_JWT_TOKEN,
           }
         );
 
-        // save user token
-        user.token = token;
-
-        // hide the password field before returning
-        user.password = "";
+        user = {
+          address: user.address,
+          token: token,
+        };
 
         return user;
       }
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -67,7 +65,7 @@ module.exports = {
     try {
       return await UserModel.findOne(conditions);
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -85,10 +83,10 @@ module.exports = {
       newData.updatedAt = new Date();
 
       // update and return the result
-      let updateResult = await UserModel.updateOne(id, { $set: newData });
+      const updateResult = await UserModel.updateOne(id, { $set: newData });
       return updateResult;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -96,44 +94,44 @@ module.exports = {
     try {
       return await UserModel.deleteOne(conditions);
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
   count: async function (conditions) {
     try {
-      let userCount = await UserModel.countDocuments(conditions);
+      const userCount = await UserModel.countDocuments(conditions);
       return userCount;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return 0;
     }
   },
 
   search: async function (conditions, pagination) {
     try {
-      let userList = await UserModel.find(conditions)
-        .select("_id username email address isAdmin status createdAt updatedAt")
+      const userList = await UserModel.find(conditions)
+        .select('_id username email address isAdmin status createdAt updatedAt')
         .skip((pagination.page - 1) * pagination.pageSize)
         .limit(pagination.pageSize)
         .sort({ createdAt: -1 });
       return userList;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return [];
     }
   },
 
   validateAdmin: async function (userId) {
     try {
-      let user = await UserModel.findOne({ _id: new ObjectID(userId) });
+      const user = await UserModel.findOne({ _id: new ObjectID(userId) });
       if (user.isAdmin) {
         return true;
       } else {
         return false;
       }
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return false;
     }
   },
@@ -145,24 +143,24 @@ module.exports = {
 
     const correctMsg = originalMessage === process.env.MESSAGE_SIGNATURE;
     const differentTime = BN.from(Date.now()).div(1000).sub(dateTime);
-    
+
     if (
       !correctMsg ||
       !differentTime.gte(0) ||
       !differentTime.lte(process.env.EXPIRED_MESSAGE_SIGN)
     ) {
-      return { result: false, message: "INVALID_SIGNATURE" };
+      return { result: false, message: 'INVALID_SIGNATURE' };
     }
 
     // verify signature
     const recover = await web3.eth.accounts.recover(message, signature);
     const recoverConvert = web3.utils.toChecksumAddress(recover);
     address = web3.utils.toChecksumAddress(address);
-    console.log("recover: ", recover);
+    console.log('recover: ', recover);
     if (recoverConvert && recoverConvert === address) {
-      return { result: true, message: "Success" };
+      return { result: true, message: 'Success' };
     } else {
-      return { result: false, message: "INVALID_SIGNATURE" };
+      return { result: false, message: 'INVALID_SIGNATURE' };
     }
   },
 };

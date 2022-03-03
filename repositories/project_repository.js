@@ -1,7 +1,7 @@
-var { ProjectModel, UserModel } = require('../models');
-var consts = require('../utils/consts');
-var mongoose = require('mongoose');
-var logger = require('../utils/logger');
+const { ProjectModel, UserModel } = require('../models');
+const consts = require('../utils/consts');
+const mongoose = require('mongoose');
+const logger = require('../utils/logger');
 
 module.exports = {
   create: async function (projectInfo) {
@@ -16,7 +16,7 @@ module.exports = {
 
       return project;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -24,7 +24,7 @@ module.exports = {
     try {
       return await ProjectModel.findOne(conditions);
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -34,7 +34,7 @@ module.exports = {
       let updateResult = await ProjectModel.updateOne(id, { $set: newData });
       return updateResult;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -53,7 +53,7 @@ module.exports = {
 
       return project;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
     }
   },
 
@@ -62,7 +62,7 @@ module.exports = {
       let userCount = await ProjectModel.countDocuments(conditions);
       return userCount;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return 0;
     }
   },
@@ -75,7 +75,7 @@ module.exports = {
         .sort({createdAt: -1});
       return projectList;
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return [];
     }
   },
@@ -90,7 +90,7 @@ module.exports = {
         return false;
       }
     } catch (error) {
-      logger.error(new Error(error));
+      _logger.error(new Error(error));
       return false;
     }
   },
