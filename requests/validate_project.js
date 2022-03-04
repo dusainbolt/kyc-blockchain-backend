@@ -1,6 +1,7 @@
-const {body, query, validationResult, param} = require('express-validator');
-const { ProjectModel, UserModel } = require('../models');
+const { body, query } = require('express-validator');
+const { ProjectModel } = require('../models');
 const ObjectID = require('mongodb').ObjectID;
+const web3 = require('web3');
 
 module.exports = {
   classname: 'ValidateProject',
@@ -8,7 +9,8 @@ module.exports = {
   create: () => {
     return [
       body('name')
-        .not().isEmpty()
+        .not()
+        .isEmpty()
         .withMessage('Missing name parameter.')
         .trim()
         .isLength({ min: 4, max: 20 })
@@ -16,44 +18,57 @@ module.exports = {
         .custom((value) => {
           return ProjectModel.findOne({ name: value }).then((project) => {
             if (project) {
-              return Promise.reject('Name is already registered.');
+              const msg = 'Name is already registered.';
+              return Promise.reject(msg);
             }
           });
         }),
 
-      body('note')
-        .not().isEmpty()
-        .withMessage('Missing note parameter.'),
-    ];
-  },
-
-  update: () => {
-    return [
-      body('id')
-        .not().isEmpty()
-        .withMessage('Missing id parameter.')
+      body('userAddress')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing userAddress parameter.')
         .custom((value) => {
-          if (!ObjectID.isValid(value)) {
-            return Promise.reject('Invalid id.');
-          } else {
-            return Promise.resolve(true);
-          }
+          const isAdress = web3.utils.isAddress(value);
+          return isAdress
+            ? Promise.resolve(true)
+            : Promise.reject('Invalid address');
         }),
     ];
   },
 
-  retrieve: () => {
-    return [
-      query('id')
-        .not().isEmpty()
-        .withMessage('Missing id parameter.')
-        .custom((value) => {
-          if (!ObjectID.isValid(value)) {
-            return Promise.reject('Invalid id.');
-          } else {
-            return Promise.resolve(true);
-          }
-        }),
-    ];
-  },
+  // update: () => {
+  //   return [
+  //     body('id')
+  //       .not()
+  //       .isEmpty()
+  //       .withMessage('Missing id parameter.')
+  //       .custom((value) => {
+  //         if (!ObjectID.isValid(value)) {
+  //           const msg = 'Invalid id.';
+  //           return Promise.reject(msg);
+  //         } else {
+  //           return Promise.resolve(true);
+  //         }
+  //       }),
+  //   ];
+  // },
+
+  // retrieve: () => {
+  //   return [
+  //     query('id')
+  //       .not()
+  //       .isEmpty()
+  //       .withMessage('Missing id parameter.')
+  //       .custom((value) => {
+  //         if (!ObjectID.isValid(value)) {
+  //           const msg = 'Invalid id.';
+  //           return Promise.reject(msg);
+  //         } else {
+  //           return Promise.resolve(true);
+  //         }
+  //       }),
+  //   ];
+  // },
 };

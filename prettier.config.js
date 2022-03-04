@@ -1,6 +1,21 @@
 module.exports = {
-  tabWidth: 2,
+  arrowParens: 'always',
+  bracketSpacing: true,
+  jsxBracketSameLine: true,
+  printWidth: 80,
+  proseWrap: 'preserve',
+  requirePragma: false,
   semi: true,
   singleQuote: true,
-  trailingComma: 'es5',
+  tabWidth: 2,
+  // trailingComma: 'all',
+  useTabs: false,
+  overrides: [
+    {
+      files: '*.json',
+      options: {
+        printWidth: 200,
+      },
+    },
+  ],
 };

@@ -20,14 +20,6 @@ const UserSchema = new Schema(
       enum: DB_STATUS,
       default: DB_STATUS.ACTIVE,
     },
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
-    // updatedAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
   },
   { usePushEach: true, timestamps: true }
 );

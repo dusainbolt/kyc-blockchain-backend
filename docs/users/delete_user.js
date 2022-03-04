@@ -1,33 +1,33 @@
 module.exports = {
   delete: {
-    tags: ["Users"],
+    tags: ['Users'],
     security: [
       {
         ApiKeyAuth: [],
       },
     ],
-    summary: "Deleting a user",
-    operationId: "deleteUser",
+    summary: 'Deleting a user',
+    operationId: 'deleteUser',
     parameters: [
       {
-        name: "id",
-        in: "query",
+        name: 'id',
+        in: 'query',
         schema: {
-          $ref: "#/components/schemas/Id",
+          $ref: '#/components/schemas/Id',
         },
         required: true,
-        description: "Deleting a user",
+        description: 'Deleting a user',
       },
     ],
     responses: {
       200: {
-        description: "User deleted successfully",
+        description: 'User deleted successfully',
       },
       404: {
-        description: "User not found",
+        description: 'User not found',
       },
       500: {
-        description: "Server error",
+        description: 'Server error',
       },
     },
   },

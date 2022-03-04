@@ -1,19 +1,19 @@
 module.exports = {
   patch: {
-    tags: ["Projects"],
+    tags: ['Projects'],
     security: [
       {
         ApiKeyAuth: [],
       },
     ],
-    summary: "Update info of project",
-    operationId: "updateProject",
+    summary: 'Update info of project',
+    operationId: 'updateProject',
     parameters: [],
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           schema: {
-            $ref: "#/components/schemas/ProjectUpdate",
+            $ref: '#/components/schemas/ProjectUpdate',
           },
         },
       },
@@ -21,15 +21,15 @@ module.exports = {
     responses: {
       201: {
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              $ref: "#/components/schemas/ProjectResponse",
+              $ref: '#/components/schemas/ProjectResponse',
             },
           },
         },
       },
       500: {
-        description: "Server error",
+        description: 'Server error',
       },
     },
   },

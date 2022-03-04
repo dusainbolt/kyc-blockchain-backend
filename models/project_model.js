@@ -17,20 +17,12 @@ const ProjectSchema = new Schema(
     status: {
       type: Number,
       enum: DB_STATUS,
-      default: DB_STATUS.ACTIVE,
+      default: DB_STATUS.INACTIVE,
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
-    // updatedAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
   },
   { usePushEach: true, timestamps: true }
 );
