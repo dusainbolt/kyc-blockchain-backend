@@ -1,59 +1,59 @@
-const { body, query, validationResult, param } = require("express-validator");
-const { UserModel } = require("../models");
-const ObjectID = require("mongodb").ObjectID;
-const web3 = require("web3");
+const { body, query } = require('express-validator');
+const { UserModel } = require('../models');
+const ObjectID = require('mongodb').ObjectID;
+const web3 = require('web3');
 
 module.exports = {
-  classname: "ValidateUser",
+  classname: 'ValidateUser',
 
   register: () => {
     return [
-      body("username")
+      body('username')
         .not()
         .isEmpty()
-        .withMessage("Missing username parameter.")
+        .withMessage('Missing username parameter.')
         .trim()
         .isLength({ min: 4, max: 20 })
-        .withMessage("Username is between 4-20 characters.")
+        .withMessage('Username is between 4-20 characters.')
         .custom((value) => {
           return UserModel.findOne({ username: value }).then((user) => {
             if (user) {
-              return Promise.reject("Username is already registered.");
+              return Promise.reject('Username is already registered.');
             }
           });
         }),
 
-      body("email")
+      body('email')
         .not()
         .isEmpty()
-        .withMessage("Missing email parameter.")
+        .withMessage('Missing email parameter.')
         .trim()
         .isEmail()
-        .withMessage("Invalid email.")
+        .withMessage('Invalid email.')
         .custom((value) => {
           return UserModel.findOne({ email: value }).then((user) => {
             if (user) {
-              return Promise.reject("Email is already registered.");
+              return Promise.reject('Email is already registered.');
             }
           });
         }),
 
-      body("password")
+      body('password')
         .not()
         .isEmpty()
-        .withMessage("Missing password parameter."),
+        .withMessage('Missing password parameter.'),
     ];
   },
 
   update: () => {
     return [
-      body("id")
+      body('id')
         .not()
         .isEmpty()
-        .withMessage("Missing id parameter.")
+        .withMessage('Missing id parameter.')
         .custom((value) => {
           if (!ObjectID.isValid(value)) {
-            return Promise.reject("Invalid id.");
+            return Promise.reject('Invalid id.');
           } else {
             return Promise.resolve(true);
           }
@@ -63,13 +63,13 @@ module.exports = {
 
   retrieve: () => {
     return [
-      query("id")
+      query('id')
         .not()
         .isEmpty()
-        .withMessage("Missing id parameter.")
+        .withMessage('Missing id parameter.')
         .custom((value) => {
           if (!ObjectID.isValid(value)) {
-            return Promise.reject("Invalid id.");
+            return Promise.reject('Invalid id.');
           } else {
             return Promise.resolve(true);
           }
@@ -79,36 +79,44 @@ module.exports = {
 
   login: () => {
     return [
-      body("email")
+      body('email')
         .not()
         .isEmpty()
-        .withMessage("Missing email parameter.")
+        .withMessage('Missing email parameter.')
         .trim()
         .isEmail()
-        .withMessage("Invalid email."),
+        .withMessage('Invalid email.'),
 
-      body("password")
+      body('password')
         .not()
         .isEmpty()
-        .withMessage("Missing password parameter."),
+        .withMessage('Missing password parameter.'),
     ];
   },
 
   verifySign: () => {
     return [
-      body("address")
+      body('address')
         .trim()
         .not()
         .isEmpty()
-        .withMessage("Missing address parameter.")
+        .withMessage('Missing address parameter.')
         .custom((value) => {
           const isAddress = web3.utils.isAddress(value);
           return isAddress
             ? Promise.resolve(true)
-            : Promise.reject("Invalid address");
+            : Promise.reject('Invalid address');
         }),
-      body("messageHash").trim().not().isEmpty().withMessage("Missing messageHash parameter."),
-      body("signature").trim().not().isEmpty().withMessage("Missing signature parameter."),
+      body('messageHash')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing messageHash parameter.'),
+      body('signature')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing signature parameter.'),
     ];
   },
 };

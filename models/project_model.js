@@ -17,7 +17,7 @@ const ProjectSchema = new Schema(
     status: {
       type: Number,
       enum: DB_STATUS,
-      default: DB_STATUS.ACTIVE,
+      default: DB_STATUS.INACTIVE,
     },
     userId: {
       type: Schema.Types.ObjectId,

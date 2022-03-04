@@ -1,19 +1,19 @@
 module.exports = {
   patch: {
-    tags: ["Users"],
+    tags: ['Users'],
     security: [
       {
         ApiKeyAuth: [],
       },
     ],
-    summary: "Update info of user",
-    operationId: "updateUser",
+    summary: 'Update info of user',
+    operationId: 'updateUser',
     parameters: [],
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           schema: {
-            $ref: "#/components/schemas/UserUpdate",
+            $ref: '#/components/schemas/UserUpdate',
           },
         },
       },
@@ -21,15 +21,15 @@ module.exports = {
     responses: {
       201: {
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              $ref: "#/components/schemas/UserResponse",
+              $ref: '#/components/schemas/UserResponse',
             },
           },
         },
       },
       500: {
-        description: "Server error",
+        description: 'Server error',
       },
     },
   },

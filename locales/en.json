@@ -17,5 +17,5 @@
 	"INVALID_SIGNATURE": "Message signature is invalid",
 	"INVALID_PROJECT_OF_USER": "Invalid project of user",
 	"NOT_ENOUGH_PERMISSION": "Not enough permission",
-	"SUCCESS": "SUCCESS"
+	"USER_NOT_EXIST": "User does not exist"
 }
