@@ -4,8 +4,8 @@ const components = require('./components');
 const tags = require('./tags');
 
 module.exports = {
-    ...apidoc,
-    ...servers,
-    ...components,
-    ...tags
+  ...apidoc,
+  ...servers,
+  ...components,
+  ...tags,
 };

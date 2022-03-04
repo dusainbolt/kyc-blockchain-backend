@@ -38,37 +38,37 @@ module.exports = {
     ];
   },
 
-  update: () => {
-    return [
-      body('id')
-        .not()
-        .isEmpty()
-        .withMessage('Missing id parameter.')
-        .custom((value) => {
-          if (!ObjectID.isValid(value)) {
-            const msg = 'Invalid id.';
-            return Promise.reject(msg);
-          } else {
-            return Promise.resolve(true);
-          }
-        }),
-    ];
-  },
+  // update: () => {
+  //   return [
+  //     body('id')
+  //       .not()
+  //       .isEmpty()
+  //       .withMessage('Missing id parameter.')
+  //       .custom((value) => {
+  //         if (!ObjectID.isValid(value)) {
+  //           const msg = 'Invalid id.';
+  //           return Promise.reject(msg);
+  //         } else {
+  //           return Promise.resolve(true);
+  //         }
+  //       }),
+  //   ];
+  // },
 
-  retrieve: () => {
-    return [
-      query('id')
-        .not()
-        .isEmpty()
-        .withMessage('Missing id parameter.')
-        .custom((value) => {
-          if (!ObjectID.isValid(value)) {
-            const msg = 'Invalid id.';
-            return Promise.reject(msg);
-          } else {
-            return Promise.resolve(true);
-          }
-        }),
-    ];
-  },
+  // retrieve: () => {
+  //   return [
+  //     query('id')
+  //       .not()
+  //       .isEmpty()
+  //       .withMessage('Missing id parameter.')
+  //       .custom((value) => {
+  //         if (!ObjectID.isValid(value)) {
+  //           const msg = 'Invalid id.';
+  //           return Promise.reject(msg);
+  //         } else {
+  //           return Promise.resolve(true);
+  //         }
+  //       }),
+  //   ];
+  // },
 };

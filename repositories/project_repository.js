@@ -1,7 +1,4 @@
 const { ProjectModel, UserModel } = require('../models');
-// const consts = require('../utils/consts');
-// const mongoose = require('mongoose');
-// const logger = require('../utils/logger');
 
 module.exports = {
   create: async function (conditions) {
