@@ -1,18 +1,15 @@
 const { ProjectModel, UserModel } = require('../models');
-const consts = require('../utils/consts');
-const mongoose = require('mongoose');
-const logger = require('../utils/logger');
 
 module.exports = {
-  create: async function (projectInfo) {
+  create: async function (conditions) {
     try {
-      let project = await ProjectModel.create(projectInfo);
+      const project = await ProjectModel.create(conditions);
 
-      let user = await UserModel.findOne({_id: projectInfo.adminId})
-      
+      // const user = await UserModel.findOne({ _id: conditions.adminId });
+
       // update project id into user
-      user.projects.push(project._id);
-      user.save();
+      // user.projects.push(project._id);
+      // user.save();
 
       return project;
     } catch (error) {
@@ -31,7 +28,7 @@ module.exports = {
   updateOne: async function (id, newData) {
     try {
       // update and return the result
-      let updateResult = await ProjectModel.updateOne(id, { $set: newData });
+      const updateResult = await ProjectModel.updateOne(id, { $set: newData });
       return updateResult;
     } catch (error) {
       _logger.error(new Error(error));
@@ -40,10 +37,10 @@ module.exports = {
 
   findAndDelete: async function (conditions) {
     try {
-      let project = await ProjectModel.findOneAndDelete(conditions);
+      const project = await ProjectModel.findOneAndDelete(conditions);
 
       if (project) {
-        let user = await UserModel.findOne({_id: conditions.adminId});
+        const user = await UserModel.findOne({ _id: conditions.adminId });
         const index = user.projects.indexOf(project._id);
         if (index > -1) {
           user.projects.splice(index, 1); // 2nd parameter means remove one item only
@@ -59,7 +56,7 @@ module.exports = {
 
   count: async function (conditions) {
     try {
-      let userCount = await ProjectModel.countDocuments(conditions);
+      const userCount = await ProjectModel.countDocuments(conditions);
       return userCount;
     } catch (error) {
       _logger.error(new Error(error));
@@ -69,10 +66,10 @@ module.exports = {
 
   search: async function (conditions, pagination) {
     try {
-      let projectList = await ProjectModel.find(conditions)
+      const projectList = await ProjectModel.find(conditions)
         .skip((pagination.page - 1) * pagination.pageSize)
         .limit(pagination.pageSize)
-        .sort({createdAt: -1});
+        .sort({ createdAt: -1 });
       return projectList;
     } catch (error) {
       _logger.error(new Error(error));
@@ -82,7 +79,7 @@ module.exports = {
 
   validateProject: async function (userId, projectId) {
     try {
-      let user = await UserModel.findOne({ _id: userId});
+      const user = await UserModel.findOne({ _id: userId });
       const index = user.projects.indexOf(projectId);
       if (index > -1) {
         return true;
@@ -94,4 +91,4 @@ module.exports = {
       return false;
     }
   },
-}
+};

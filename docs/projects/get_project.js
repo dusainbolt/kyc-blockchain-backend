@@ -1,44 +1,44 @@
 module.exports = {
   get: {
-    tags: ["Projects"],
+    tags: ['Projects'],
     security: [
       {
         ApiKeyAuth: [],
       },
     ],
-    summary: "Get info of a project",
-    operationId: "getProjectInfo",
+    summary: 'Get info of a project',
+    operationId: 'getProjectInfo',
     parameters: [
       {
-        name: "id",
-        in: "query",
+        name: 'id',
+        in: 'query',
         schema: {
-          $ref: "#/components/schemas/IdProject",
+          $ref: '#/components/schemas/IdProject',
         },
         required: true,
-        description: "A single project id",
+        description: 'A single project id',
       },
     ],
     responses: {
       200: {
-        description: "Get project successfuly",
+        description: 'Get project successfuly',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              $ref: "#/components/schemas/ProjectResponse",
+              $ref: '#/components/schemas/ProjectResponse',
             },
           },
         },
       },
       404: {
-        description: "Project is not found",
+        description: 'Project is not found',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              $ref: "#/components/schemas/Error",
+              $ref: '#/components/schemas/Error',
               example: {
                 message: "We can't find the user",
-                internal_code: "Invalid id",
+                internal_code: 'Invalid id',
               },
             },
           },

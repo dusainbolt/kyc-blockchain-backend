@@ -1,11 +1,14 @@
-const jwt = require("jsonwebtoken");
-const { handlerRequire, handlerAuthentication } = require('../utils/response_handler');
+const jwt = require('jsonwebtoken');
+const {
+  handlerRequire,
+  handlerAuthentication,
+} = require('../utils/response_handler');
 
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
   const token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
+    req.body.token || req.query.token || req.headers['x-access-token'];
 
   if (!token) {
     return handlerRequire(req, res, res.__('TOKEN_AUTH_REQUIRE'));

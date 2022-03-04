@@ -1,46 +1,54 @@
 // const { validationResult } = require('express-validator');
-// const { validateRouter, paginationGenerator } = require('../utils/helper')
+const { validateRouter } = require('../utils/helper');
 // const consts = require('../utils/consts');
-// const { handlerSuccess, handlerError } = require('../utils/response_handler');
+const { handlerError, handlerSuccess } = require('../utils/response_handler');
 // const logger = require('../utils/logger');
-
-// const projectRepository = require('../repositories/project_repository');
+const { v4: uuidv4 } = require('uuid');
+const projectRepository = require('../repositories/project_repository');
+const userRepository = require('../repositories/user_repository');
 // const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ProjectController',
 
-  // create: async (req, res, next) => {
-  //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  create: async (req, res, next) => {
+    // validate the input parameters
+    const validate = validateRouter(req, res);
 
-  //   // handle the error, stop
-  //   if (validate) {
-  //     return handlerError(req, res, validate);
-  //   }
-
-  //   // valid parameters
-  //   try {
-  //     // prepare to create project
-  //     let newProject = {
-  //       name: req.body.name,
-  //       adminId: req.user.userId,
-  //       note: req.body.note,
-  //     };
-
-  //     let result = await projectRepository.create(newProject);
-
-  //     // send response
-  //     if (result) {
-  //       return handlerSuccess(req, res, result, res.__('REGISTER_SUCCESS'));
-  //     } else {
-  //       return handlerError(req, res, res.__('UNABLE_TO_REGISTER'));
-  //     }
-  //   } catch (error) {
-  //     _logger.error(new Error(error));
-  //     next(error);
-  //   }
-  // },
+    // handle the error, stop
+    if (validate) {
+      return handlerError(req, res, validate);
+    }
+    // valid parameters
+    try {
+      // find user
+      const user = await userRepository.findOne({
+        address: req.body.userAddress,
+      });
+      // check user exist
+      if (!user) {
+        return handlerError(req, res, res.__('USER_NOT_EXIST'));
+      }
+      // create apikey for project
+      const apiKey = uuidv4();
+      // prepare to create project
+      const credentials = {
+        name: req.body.name,
+        apiKey: apiKey,
+        userId: req.user._id,
+      };
+      // create user
+      const result = await projectRepository.create(credentials);
+      if (result) {
+        return handlerSuccess(req, res, result, res.__('REGISTER_SUCCESS'));
+      } else {
+        return handlerError(req, res, res.__('UNABLE_TO_REGISTER'));
+      }
+    } catch (error) {
+      _logger.error(new Error(error));
+      next(error);
+    }
+  },
 
   // retrieve: async (req, res, next) => {
   //   // validate the input parameters

@@ -1,16 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const {
-  userController,
-  projectController,
-} = require("../controllers");
+const { userController, projectController } = require('../controllers');
 
-const { 
-  validateUser,
-  validateProject
-} = require("../requests");
+const { validateUser, validateProject } = require('../requests');
 
-// const auth = require("../middleware/auth");
+const auth = require('../middleware/auth');
 
 /* User APIs */
 // router.post("/user/create", validateUser.register(), auth, userController.register);
@@ -20,10 +14,15 @@ const {
 // router.delete("/user/delete", validateUser.retrieve(), auth, userController.delete);
 // router.get("/user/search", auth, userController.search);
 // router.post("/user/verify-sign", validateUser.verifySign(), userController.verifySign);
-router.post("/user/login", validateUser.verifySign(), userController.login);
+router.post('/user/login', validateUser.verifySign(), userController.login);
 
 /* Project APIs */
-// router.post("/project/create", validateProject.create(), auth, projectController.create);
+router.post(
+  '/project/create',
+  validateProject.create(),
+  auth,
+  projectController.create
+);
 // router.get("/project/get-info", validateProject.retrieve(), auth, projectController.retrieve);
 // router.patch("/project/update", validateProject.update(), auth, projectController.update);
 // router.delete("/project/delete", validateProject.retrieve(), auth, projectController.delete);

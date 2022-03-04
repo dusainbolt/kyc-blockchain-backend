@@ -61,14 +61,6 @@ const KycSchema = new Schema(
         src: { type: String },
       },
     ],
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
-    // updatedAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
   },
   { usePushEach: true, timestamps: true }
 );
