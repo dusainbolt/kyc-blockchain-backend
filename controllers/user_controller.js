@@ -79,15 +79,14 @@ module.exports = {
       }
 
       // retrieve user record
-      var user = await userRepository.findOne({
+      let user = await userRepository.findOne({
         address: accountLogin.address,
       });
 
       //create user if user does not exist
       if (!user) {
-        var user = await userRepository.create({
+        user = await userRepository.create({
           address: accountLogin.address,
-          role: accountLogin.role,
         });
       }
 
