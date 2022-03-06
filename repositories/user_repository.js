@@ -17,18 +17,6 @@ module.exports = {
     try {
       const accountInfo = await UserModel.create(newAccountInfo);
 
-      // Create token
-      const token = jwt.sign(
-        { userId: accountInfo._id, email: newAccountInfo.email },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: process.env.EXPIRED_JWT_TOKEN,
-        }
-      );
-
-      // save user token
-      accountInfo.token = token;
-
       return accountInfo;
     } catch (error) {
       _logger.error(new Error(error));
@@ -140,7 +128,6 @@ module.exports = {
     // verify message
     const bytes = AES.decrypt(message, process.env.APP_KEY);
     const { dateTime, originalMessage } = JSON.parse(bytes.toString(Utf8));
-
     const correctMsg = originalMessage === process.env.MESSAGE_SIGNATURE;
     const differentTime = BN.from(Date.now()).div(1000).sub(dateTime);
 
@@ -161,6 +148,32 @@ module.exports = {
       return { result: true, message: 'Success' };
     } else {
       return { result: false, message: 'INVALID_SIGNATURE' };
+    }
+  },
+
+  //sign jwt
+  signJWT: async function (credential) {
+    try {
+      // create token
+      const token = jwt.sign(
+        {
+          userId: credential._id,
+          adress: credential.address,
+          role: credential.role,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: process.env.EXPIRED_JWT_TOKEN,
+        }
+      );
+
+      user = {
+        address: credential.address,
+        token: token,
+      };
+      return user;
+    } catch (error) {
+      _logger.error(new Error(error));
     }
   },
 };
