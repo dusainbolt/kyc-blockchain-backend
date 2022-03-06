@@ -49,12 +49,20 @@ module.exports = {
       signature: {
         type: 'string',
         description: 'signature',
-        example: '123456',
+        example:
+          '0xf0fda856ca72b02027149501b8019a381c60bd9040f84aff1c7ddd242681ca6a710bdac17b7516b436ffec75fa0ec11a0384c2467ec56789b668179e23bf52d21c',
       },
       messageHash: {
         type: 'string',
         description: 'message hash',
-        example: '123456',
+        example:
+          'U2FsdGVkX195KLMFJn/yB9a91TNdxVwTkKXk5XP/DYi7PP1QYkO2vUNmd2/1mUL46ShChfglNvARkBobN46BCwHwCMJeUPAI5IOVk8OlYmW+E+G63a6Y1CEYGXsqJ95w',
+      },
+      role: {
+        type: 'number',
+        description: 'role of user',
+        enum: { USER: 0, ADMIN: 1, PROJECT_ADMIN: 2 },
+        example: 1,
       },
     },
     required: ['address', 'signature', 'messageHash'],

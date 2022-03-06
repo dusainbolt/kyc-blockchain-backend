@@ -65,12 +65,41 @@ module.exports = {
         address: req.body.address,
         messageHash: req.body.messageHash,
         signature: req.body.signature,
+        role: req.body.role,
       };
-      // retrieve user record
-      const user = await userRepository.findOneLogin(accountLogin);
 
-      if (user) {
-        return handlerSuccess(req, res, user, res.__('Success'));
+      // check signature
+      const checkSignature = await userRepository.checkSignature(
+        accountLogin.address,
+        accountLogin.messageHash,
+        accountLogin.signature
+      );
+      if (!checkSignature.result) {
+        return handlerError(req, res, res.__('INVALID_SIGNATURE'));
+      }
+
+      // retrieve user record
+      let user = await userRepository.findOne({
+        address: accountLogin.address,
+      });
+
+      //create user if user does not exist
+      if (!user) {
+        user = await userRepository.create({
+          address: accountLogin.address,
+        });
+      }
+
+      // check role's user if login account has role
+      if (accountLogin.role && !(user.role == accountLogin.role)) {
+        return handlerError(req, res, res.__('INVALID_ROLE'));
+      }
+
+      //create token
+      const result = await userRepository.signJWT(user);
+
+      if (result) {
+        return handlerSuccess(req, res, result, res.__('Success'));
       } else {
         return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
       }
