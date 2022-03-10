@@ -33,11 +33,6 @@ router.post(
 // router.get("/project/search", auth, projectController.search);
 
 /* KYC APIs */
-router.post(
-  '/kyc/create',
-  validateUser.verifySign(),
-  validateKyc.create(),
-  kycController.create
-);
+router.post('/kyc/create', auth, validateKyc.create(), kycController.create);
 
 module.exports = router;
