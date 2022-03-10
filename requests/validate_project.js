@@ -1,6 +1,6 @@
-const { body, query } = require('express-validator');
+const { body } = require('express-validator');
 const { ProjectModel } = require('../models');
-const ObjectID = require('mongodb').ObjectID;
+//const ObjectID = require('mongodb').ObjectID;
 const web3 = require('web3');
 
 module.exports = {

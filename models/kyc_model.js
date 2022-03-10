@@ -31,7 +31,7 @@ const KycSchema = new Schema(
       type: Number,
       required: true,
       enum: KYC_GENDER,
-      default: 0,
+      default: KYC_GENDER.MALE,
     },
     birthday: {
       type: Date,
