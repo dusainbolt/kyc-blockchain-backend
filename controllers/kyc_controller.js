@@ -1,6 +1,7 @@
 const { validateRouter } = require('../utils/helper');
 const { handlerSuccess, handlerError } = require('../utils/response_handler');
 const { KYC_STATUS } = require('../utils/consts');
+const kycRepository = require('../repositories/kyc_repository');
 
 module.exports = {
   classname: 'KycController',
@@ -16,11 +17,10 @@ module.exports = {
 
     //get userId from user verified access token
     const userId = req.user.userId;
-    // set status
-    const status = KYC_STATUS.PENDING;
+
     const credentials = {
       userId: userId,
-      status: status,
+      status: KYC_STATUS.PENDING,
       email: req.body.email,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -32,6 +32,12 @@ module.exports = {
       nowAdress: req.body.nowAdress,
     };
 
-    return handlerSuccess(req, res, credentials, res.__('REQUEST_SENT'));
+    //create KYC
+    const result = await kycRepository.create(credentials);
+    if (result) {
+      return handlerSuccess(req, res, result, res.__('REQUEST_SENT'));
+    } else {
+      return handlerError(req, res, res.__('UNABLE_TO_CREATE'));
+    }
   },
 };

@@ -19,5 +19,7 @@
 	"NOT_ENOUGH_PERMISSION": "Not enough permission",
 	"USER_NOT_EXIST": "User does not exist",
 	"INVALID_ROLE": "Invalid role",
-	"REQUEST_SENT": "Request has been sent"
+	"REQUEST_SENT": "Request has been sent",
+	"CREATE_SUCCESS": "Create successful!",
+	"UNABLE_TO_CREATE": "Unable to create!"
 }

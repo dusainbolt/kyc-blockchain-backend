@@ -1,7 +1,5 @@
 const { body } = require('express-validator');
 const { KycModel } = require('../models');
-// const { UserModel } = require('../models');
-// const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ValidateKyc',
