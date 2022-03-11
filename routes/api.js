@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { userController, projectController } = require('../controllers');
+const {
+  userController,
+  projectController,
+  kycController,
+} = require('../controllers');
 
-const { validateUser, validateProject } = require('../requests');
+const { validateUser, validateProject, validateKyc } = require('../requests');
 
 const auth = require('../middleware/auth');
 
@@ -27,5 +31,8 @@ router.post(
 // router.patch("/project/update", validateProject.update(), auth, projectController.update);
 // router.delete("/project/delete", validateProject.retrieve(), auth, projectController.delete);
 // router.get("/project/search", auth, projectController.search);
+
+/* KYC APIs */
+router.post('/kyc/create', auth, validateKyc.create(), kycController.create);
 
 module.exports = router;

@@ -3,4 +3,5 @@ module.exports = {
   USER_ROLE: { USER: 0, ADMIN: 1, PROJECT_ADMIN: 2 },
   KYC_GENDER: { MALE: 0, FEMALE: 1 },
   ID_IMAGE: { ID_CARD: 0, PASSPORT: 1 },
+  KYC_STATUS: { PENDING: 0, APPROVE: 1 },
 };

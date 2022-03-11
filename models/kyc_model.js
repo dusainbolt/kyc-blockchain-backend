@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { DB_STATUS, KYC_GENDER, ID_IMAGE } = require('../utils/consts');
+const { KYC_STATUS, KYC_GENDER, ID_IMAGE } = require('../utils/consts');
 const Schema = mongoose.Schema;
 
 const KycSchema = new Schema(
@@ -31,7 +31,7 @@ const KycSchema = new Schema(
       type: Number,
       required: true,
       enum: KYC_GENDER,
-      default: 0,
+      default: KYC_GENDER.MALE,
     },
     birthday: {
       type: Date,
@@ -52,7 +52,7 @@ const KycSchema = new Schema(
     },
     status: {
       type: Number,
-      enum: DB_STATUS,
+      enum: KYC_STATUS,
       required: true,
     },
     identifierImage: [
