@@ -21,5 +21,6 @@
 	"INVALID_ROLE": "Invalid role",
 	"REQUEST_SENT": "Request has been sent",
 	"CREATE_SUCCESS": "Create successful!",
-	"UNABLE_TO_CREATE": "Unable to create!"
+	"UNABLE_TO_CREATE": "Unable to create!",
+	"KYC_NOT_EXIST": "Kyc does not exits"
 }
