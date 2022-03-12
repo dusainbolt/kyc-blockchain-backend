@@ -10,10 +10,10 @@ module.exports = {
       _logger.error(new Error(error));
     }
   },
-  updateOne: async function (id, newData) {
+  updateOne: async function (conditions, newData) {
     try {
       // update and return the result
-      const updateResult = await KycModel.updateOne(id, { $set: newData });
+      const updateResult = await KycModel.updateOne(conditions, { $set: newData });
       return updateResult;
     } catch (error) {
       _logger.error(new Error(error));
