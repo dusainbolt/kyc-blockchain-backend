@@ -32,7 +32,7 @@ module.exports = {
     ],
     responses: {
       200: {
-        description: 'Search user successfuly',
+        description: 'Search user successfully',
         content: {
           'application/json': {
             schema: {

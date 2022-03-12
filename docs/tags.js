@@ -8,5 +8,9 @@ module.exports = {
       name: 'Projects',
       description: 'APIs of project',
     },
+    {
+      name: 'Kyc',
+      description: 'APIs of kyc',
+    },
   ],
 };

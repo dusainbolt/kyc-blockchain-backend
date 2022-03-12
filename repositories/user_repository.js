@@ -67,9 +67,6 @@ module.exports = {
         );
       }
 
-      // update the updatedAt value
-      newData.updatedAt = new Date();
-
       // update and return the result
       const updateResult = await UserModel.updateOne(id, { $set: newData });
       return updateResult;

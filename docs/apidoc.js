@@ -1,5 +1,6 @@
 const usersPath = require('./users');
 const projectsPath = require('./projects');
+const kycPath = require('./kyc');
 
 module.exports = {
   openapi: '3.0.0',
@@ -17,5 +18,6 @@ module.exports = {
   paths: {
     ...usersPath,
     ...projectsPath,
+    ...kycPath,
   },
 };

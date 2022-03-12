@@ -46,7 +46,7 @@ const KycSchema = new Schema(
       type: String,
       require: true,
     },
-    nowAdress: {
+    nowAddress: {
       type: String,
       required: true,
     },

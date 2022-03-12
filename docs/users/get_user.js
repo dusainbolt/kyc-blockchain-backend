@@ -21,7 +21,7 @@ module.exports = {
     ],
     responses: {
       200: {
-        description: 'Get user successfuly',
+        description: 'Get user successfully',
         content: {
           'application/json': {
             schema: {

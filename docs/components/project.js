@@ -1,68 +1,68 @@
 module.exports = {
   IdProject: {
-    type: "string",
-    description: "An id of a project",
-    example: "620dcd1d5041cd381360c186",
+    type: 'string',
+    description: 'An id of a project',
+    example: '620dcd1d5041cd381360c186',
   },
   ProjectResponse: {
-    type: "object",
+    type: 'object',
     properties: {
       _id: {
-        type: "integer",
-        description: "The Auto-generated id of a project",
+        type: 'integer',
+        description: 'The Auto-generated id of a project',
       },
       name: {
-        type: "string",
-        description: "name of project",
+        type: 'string',
+        description: 'name of project',
       },
       note: {
-        type: "string",
-        description: "note of project",
+        type: 'string',
+        description: 'note of project',
       },
       addressId: {
-        type: "string",
-        description: "Id of admin create project",
+        type: 'string',
+        description: 'Id of admin create project',
       },
       createdAt: {
-        type: "string",
-        description: "times create record database",
+        type: 'string',
+        description: 'times create record database',
       },
       updatedAt: {
-        type: "string",
-        description: "times change record database recently",
+        type: 'string',
+        description: 'times change record database recently',
       },
     },
   },
   ProjectCreate: {
-    type: "object",
+    type: 'object',
     properties: {
       name: {
-        type: "string",
-        description: "name of project",
-        example: "project 1",
+        type: 'string',
+        description: 'name of project',
+        example: 'project 1',
       },
       note: {
-        type: "string",
-        description: "note of project",
-        example: "description of project",
+        type: 'string',
+        description: 'note of project',
+        example: 'description of project',
       },
     },
-    required: ["name", "note"],
+    required: ['name', 'note'],
   },
   ProjectUpdate: {
-    type: "object",
+    type: 'object',
     properties: {
       id: {
-        type: "string",
-        description: "id of user",
-        example: "620dcd1d5041cd381360c186",
+        type: 'string',
+        description: 'id of user',
+        example: '620dcd1d5041cd381360c186',
       },
       note: {
-        type: "string",
-        description: "note of project",
-        example: "note user",
+        type: 'string',
+        description: 'note of project',
+        example: 'note user',
       },
     },
-    required: ["id"],
+    required: ['id'],
   },
 };
