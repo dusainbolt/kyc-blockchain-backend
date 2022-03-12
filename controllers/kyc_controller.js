@@ -32,7 +32,7 @@ module.exports = {
         birthday: req.body.birthday,
         phoneNumber: req.body.phoneNumber,
         address: req.body.address,
-        nowAdress: req.body.nowAdress,
+        nowAddress: req.body.nowAddress,
       };
 
       //create KYC
@@ -73,7 +73,7 @@ module.exports = {
         birthday: req.body.birthday,
         phoneNumber: req.body.phoneNumber,
         address: req.body.address,
-        nowAdress: req.body.nowAdress,
+        nowAddress: req.body.nowAddress,
       };
 
       //update KYC

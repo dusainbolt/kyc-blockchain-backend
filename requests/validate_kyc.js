@@ -58,11 +58,11 @@ module.exports = {
         .not()
         .isEmpty()
         .withMessage('Missing address parameter.'),
-      body('nowAdress')
+      body('nowAddress')
         .trim()
         .not()
         .isEmpty()
-        .withMessage('Missing nowAdress parameter.'),
+        .withMessage('Missing nowAddress parameter.'),
     ];
   },
 
@@ -131,11 +131,11 @@ module.exports = {
         .not()
         .isEmpty()
         .withMessage('Missing address parameter.'),
-      body('nowAdress')
+      body('nowAddress')
         .trim()
         .not()
         .isEmpty()
-        .withMessage('Missing nowAdress parameter.'),
+        .withMessage('Missing nowAddress parameter.'),
     ];
   },
 };
