@@ -35,5 +35,6 @@ router.post(
 /* KYC APIs */
 router.post('/kyc/create', auth, validateKyc.create(), kycController.create);
 router.put('/kyc/update', auth, validateKyc.update(), kycController.update);
+router.get('/kyc/info', auth, kycController.retrieve);
 
 module.exports = router;
