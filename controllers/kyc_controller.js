@@ -49,23 +49,15 @@ module.exports = {
 
       // prepare to create kyc
       const credentials = {
-        userId: userId,
+        userId,
         status: KYC_STATUS.PENDING,
-        email: req.body.email,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        fullName: req.body.fullName,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
-        phoneNumber: req.body.phoneNumber,
-        address: req.body.address,
-        nowAddress: req.body.nowAddress,
+        ...kycRepository.getCredential(req.body),
       };
 
       //create KYC
       const result = await kycRepository.create(credentials);
       if (result) {
-        return handlerSuccess(req, res, result, res.__('UPDATE_SUCCESS'));
+        return handlerSuccess(req, res, result, res.__('Success'));
       } else {
         return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
       }
@@ -90,24 +82,11 @@ module.exports = {
 
       // prepare to update kyc
       const credentials = {
-        userId: userId,
-        status: KYC_STATUS.PENDING,
-        email: req.body.email,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        fullName: req.body.fullName,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
-        phoneNumber: req.body.phoneNumber,
-        address: req.body.address,
-        nowAddress: req.body.nowAddress,
+        ...kycRepository.getCredential(req.body),
       };
 
       //update KYC
-      const result = await kycRepository.updateOne(
-        { _id: new ObjectID(req.body.id) },
-        credentials
-      );
+      const result = await kycRepository.updateOne({ userId }, credentials);
       if (result) {
         return handlerSuccess(req, res, result, res.__('UPDATE_SUCCESS'));
       } else {
