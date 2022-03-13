@@ -30,4 +30,26 @@ module.exports = {
       _logger.error(new Error(error));
     }
   },
+
+  getCredential: function (body) {
+    try {
+      return {
+        ...(body.email && {
+          email: body.email,
+        }),
+        ...(body.phoneNumber && {
+          phoneNumber: body.phoneNumber,
+        }),
+        firstName: body.firstName,
+        lastName: body.lastName,
+        fullName: body.fullName,
+        gender: body.gender,
+        birthday: body.birthday,
+        address: body.address,
+        nowAddress: body.nowAddress,
+      };
+    } catch (error) {
+      _logger.error(new Error(error));
+    }
+  },
 };

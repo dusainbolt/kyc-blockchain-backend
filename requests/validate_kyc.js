@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 const { KycModel } = require('../models');
-const ObjectID = require('mongodb').ObjectID;
+// const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ValidateKyc',
@@ -68,23 +68,8 @@ module.exports = {
 
   update: () => {
     return [
-      body('id')
-        .not()
-        .isEmpty()
-        .withMessage('Missing id parameter.')
-        .custom((value) => {
-          if (!ObjectID.isValid(value)) {
-            const msg = 'Invalid id.';
-            return Promise.reject(msg);
-          } else {
-            return Promise.resolve(true);
-          }
-        }),
       body('email')
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage('Missing email parameter.')
+        .optional()
         .isEmail()
         .withMessage('Invalid email.')
         .custom((value) => {
@@ -112,10 +97,7 @@ module.exports = {
         .withMessage('Missing fullName parameter.'),
       body('gender').not().isEmpty().withMessage('Missing gender parameter.'),
       body('phoneNumber')
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage('Missing fullName parameter.')
+        .optional()
         .isMobilePhone()
         .withMessage('Invalid mobile phone.')
         .custom((value) => {
