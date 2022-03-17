@@ -2,7 +2,6 @@ const { validateRouter } = require('../utils/helper');
 const { handlerSuccess, handlerError } = require('../utils/response_handler');
 const { KYC_STATUS } = require('../utils/consts');
 const kycRepository = require('../repositories/kyc_repository');
-const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'KycController',
@@ -26,7 +25,7 @@ module.exports = {
       if (kyc) {
         return handlerSuccess(req, res, kyc, res.__('RETRIEVE_SUCCESS'));
       } else {
-        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
+        return handlerSuccess(req, res, {}, res.__('UNABLE_TO_GET_INFO'));
       }
     } catch (error) {
       _logger.error(new Error(error));
@@ -81,9 +80,9 @@ module.exports = {
       const userId = req.user.userId;
 
       //check status kyc
-      const kyc = await kycRepository.findOne({ userId: userId });
+      const kyc = await kycRepository.findOne({ userId });
 
-      if (!(kyc.status == KYC_STATUS.REQUEST)) {
+      if (!(kyc.status == KYC_STATUS.EDITING)) {
         return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
       }
       // prepare to update kyc
@@ -103,30 +102,32 @@ module.exports = {
     }
   },
 
-  requestApprove: async (req, res) => {
-    const userId = req.user.userId;
+  requestConfirmKyc: async (req, res) => {
+    try {
+      const userId = req.user.userId;
 
-    const kyc = await kycRepository.findOne({
-      userId: userId,
-    });
+      const kyc = await kycRepository.findOne({
+        userId,
+      });
 
-    // check status kyc
-    if (kyc.status == KYC_STATUS.REQUEST) {
-      return handlerError(req, res, res.__('REQUEST_HAS_BEEN_SENT'));
-    }
-    if (kyc.status == KYC_STATUS.APPROVE) {
-      return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
-    }
-    // update status kyc
-    const result = await kycRepository.updateOne(
-      { userId },
-      { status: KYC_STATUS.REQUEST }
-    );
+      // check status kyc
+      if (kyc.status != KYC_STATUS.EDITING) {
+        return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
+      }
+      // update status kyc
+      const result = await kycRepository.updateOne(
+        { userId },
+        { status: KYC_STATUS.REQUEST }
+      );
 
-    if (result) {
-      return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
-    } else {
-      return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
+      if (result) {
+        return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
+      } else {
+        return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
+      }
+    } catch (error) {
+      _logger.error(new Error(error));
+      next(error);
     }
   },
 };

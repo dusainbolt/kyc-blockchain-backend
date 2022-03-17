@@ -14,10 +14,9 @@ module.exports = {
   updateOne: async function (conditions, newData) {
     try {
       // update and return the result
-      const updateResult = await KycModel.updateOne(conditions, {
+      return await KycModel.updateOne(conditions, {
         $set: newData,
       });
-      return updateResult;
     } catch (error) {
       _logger.error(new Error(error));
     }

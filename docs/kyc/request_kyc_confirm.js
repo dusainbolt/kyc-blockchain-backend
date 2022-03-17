@@ -6,8 +6,8 @@ module.exports = {
         ApiKeyAuth: [],
       },
     ],
-    summary: 'request approve kyc',
-    operationId: 'requestApprove',
+    summary: 'request kyc confirm',
+    operationId: 'requestKycConfirm',
     parameters: [],
     responses: {
       200: {
