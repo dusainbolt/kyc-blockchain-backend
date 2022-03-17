@@ -22,5 +22,8 @@
 	"REQUEST_SENT": "Request has been sent",
 	"CREATE_SUCCESS": "Create successful!",
 	"UNABLE_TO_CREATE": "Unable to create!",
-	"KYC_NOT_EXIST": "Kyc does not exits"
+	"KYC_NOT_EXIST": "Kyc does not exits",
+	"REQUEST_HAS_BEEN_SENT": "REQUEST_HAS_BEEN_SENT",
+	"UNABLE_TO_REQUEST": "UNABLE_TO_REQUEST",
+	"REQUEST_SUCCESS": "REQUEST_SUCCESS"
 }
