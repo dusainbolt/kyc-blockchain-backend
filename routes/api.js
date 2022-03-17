@@ -26,5 +26,6 @@ router.post('/kyc/create', auth, validateKyc.create(), kycController.create);
 router.put('/kyc/update', auth, validateKyc.update(), kycController.update);
 router.get('/kyc/info', auth, kycController.retrieve);
 router.get('/kyc/search', auth, kycController.search);
+router.get('/kyc/request', auth, kycController.requestConfirmKyc);
 
 module.exports = router;

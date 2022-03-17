@@ -29,7 +29,7 @@ module.exports = {
       if (kyc) {
         return handlerSuccess(req, res, kyc, res.__('RETRIEVE_SUCCESS'));
       } else {
-        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
+        return handlerSuccess(req, res, {}, res.__('UNABLE_TO_GET_INFO'));
       }
     } catch (error) {
       _logger.error(new Error(error));
@@ -53,7 +53,7 @@ module.exports = {
       // prepare to create kyc
       const credentials = {
         userId,
-        status: KYC_STATUS.PENDING,
+        status: KYC_STATUS.EDITING,
         ...kycRepository.getCredential(req.body),
       };
 
@@ -62,7 +62,7 @@ module.exports = {
       if (result) {
         return handlerSuccess(req, res, result, res.__('Success'));
       } else {
-        return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
+        return handlerError(req, res, res.__('UNABLE_TO_CREATE'));
       }
     } catch (error) {
       _logger.error(new Error(error));
@@ -83,11 +83,16 @@ module.exports = {
       //get userId from user verified access token
       const userId = req.user.userId;
 
+      //check status kyc
+      const kyc = await kycRepository.findOne({ userId });
+
+      if (!(kyc.status == KYC_STATUS.EDITING)) {
+        return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
+      }
       // prepare to update kyc
       const credentials = {
         ...kycRepository.getCredential(req.body),
       };
-
       //update KYC
       const result = await kycRepository.updateOne({ userId }, credentials);
       if (result) {
@@ -127,6 +132,35 @@ module.exports = {
         );
       } else {
         return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
+      }
+    } catch (error) {
+      _logger.error(new Error(error));
+      next(error);
+    }
+  },
+
+  requestConfirmKyc: async (req, res) => {
+    try {
+      const userId = req.user.userId;
+
+      const kyc = await kycRepository.findOne({
+        userId,
+      });
+
+      // check status kyc
+      if (kyc.status != KYC_STATUS.EDITING) {
+        return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
+      }
+      // update status kyc
+      const result = await kycRepository.updateOne(
+        { userId },
+        { status: KYC_STATUS.REQUEST }
+      );
+
+      if (result) {
+        return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
+      } else {
+        return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
       }
     } catch (error) {
       _logger.error(new Error(error));
