@@ -11,7 +11,7 @@ module.exports = {
 
   // register: async (req, res, next) => {
   //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  //   const validate = validateRouter(req);
 
   //   // handle the error, stop
   //   if (validate) {
@@ -51,7 +51,7 @@ module.exports = {
 
   login: async (req, res, next) => {
     // validate the input parameters
-    const validate = validateRouter(req, res);
+    const validate = validateRouter(req);
 
     // handle the error, stop
     if (validate) {
@@ -111,7 +111,7 @@ module.exports = {
 
   // retrieve: async (req, res, next) => {
   //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  //   const validate = validateRouter(req);
 
   //   // handle the error, stop
   //   if (validate) {
@@ -148,7 +148,7 @@ module.exports = {
 
   // update: async (req, res, next) => {
   //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  //   const validate = validateRouter(req);
 
   //   // handle the error, stop
   //   if (validate) {
@@ -188,7 +188,7 @@ module.exports = {
 
   // delete: async (req, res, next) => {
   //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  //   const validate = validateRouter(req);
 
   //   // handle the error, stop
   //   if (validate) {
@@ -271,7 +271,7 @@ module.exports = {
 
   // verifySign: async (req, res, next) => {
   //   // validate the input parameters
-  //   const validate = validateRouter(req, res);
+  //   const validate = validateRouter(req);
 
   //   // handle the error, stop
   //   if (validate) {

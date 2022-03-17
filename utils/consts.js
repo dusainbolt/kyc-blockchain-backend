@@ -4,4 +4,5 @@ module.exports = {
   KYC_GENDER: { MALE: 0, FEMALE: 1 },
   ID_IMAGE: { ID_CARD: 0, PASSPORT: 1 },
   KYC_STATUS: { PENDING: 0, APPROVE: 1 },
+  SORT: { FIELD: 'createdAt', ASC: 1, DESC: -1 },
 };

@@ -1,5 +1,5 @@
 module.exports = {
-  UserResponse: {
+  user_LoginResponse: {
     type: 'object',
     properties: {
       address: {
@@ -12,33 +12,33 @@ module.exports = {
       },
     },
   },
-  UserCreate: {
-    type: 'object',
-    properties: {
-      email: {
-        type: 'string',
-        description: 'email of user',
-        example: 'admin@gmail.com',
-      },
-      username: {
-        type: 'string',
-        description: 'username of user',
-        example: 'admin',
-      },
-      password: {
-        type: 'string',
-        description: 'password create user',
-        example: '123456',
-      },
-      address: {
-        type: 'string',
-        description: 'address of user',
-        example: 'address example',
-      },
-    },
-    required: ['email', 'username', 'password'],
-  },
-  UserLogin: {
+  // UserCreate: {
+  //   type: 'object',
+  //   properties: {
+  //     email: {
+  //       type: 'string',
+  //       description: 'email of user',
+  //       example: 'admin@gmail.com',
+  //     },
+  //     username: {
+  //       type: 'string',
+  //       description: 'username of user',
+  //       example: 'admin',
+  //     },
+  //     password: {
+  //       type: 'string',
+  //       description: 'password create user',
+  //       example: '123456',
+  //     },
+  //     address: {
+  //       type: 'string',
+  //       description: 'address of user',
+  //       example: 'address example',
+  //     },
+  //   },
+  //   required: ['email', 'username', 'password'],
+  // },
+  user_LoginBody: {
     type: 'object',
     properties: {
       address: {
@@ -67,36 +67,36 @@ module.exports = {
     },
     required: ['address', 'signature', 'messageHash'],
   },
-  UserUpdate: {
-    type: 'object',
-    properties: {
-      id: {
-        type: 'string',
-        description: 'id of user',
-        example: '620dcd1d5041cd381360c186',
-      },
-      password: {
-        type: 'string',
-        description: 'password of user',
-        example: '123456',
-      },
-      address: {
-        type: 'string',
-        description: 'address of user',
-        example: 'address user',
-      },
-    },
-    required: ['id'],
-  },
-  Error: {
-    type: 'object',
-    properties: {
-      message: {
-        type: 'string',
-      },
-      internal_code: {
-        type: 'string',
-      },
-    },
-  },
+  // UserUpdate: {
+  //   type: 'object',
+  //   properties: {
+  //     id: {
+  //       type: 'string',
+  //       description: 'id of user',
+  //       example: '620dcd1d5041cd381360c186',
+  //     },
+  //     password: {
+  //       type: 'string',
+  //       description: 'password of user',
+  //       example: '123456',
+  //     },
+  //     address: {
+  //       type: 'string',
+  //       description: 'address of user',
+  //       example: 'address user',
+  //     },
+  //   },
+  //   required: ['id'],
+  // },
+  // Error: {
+  //   type: 'object',
+  //   properties: {
+  //     message: {
+  //       type: 'string',
+  //     },
+  //     internal_code: {
+  //       type: 'string',
+  //     },
+  //   },
+  // },
 };

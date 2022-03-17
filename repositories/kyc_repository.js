@@ -3,9 +3,7 @@ const { KycModel } = require('../models');
 module.exports = {
   create: async function (conditions) {
     try {
-      const kyc = await KycModel.create(conditions);
-
-      return kyc;
+      return await KycModel.create(conditions);
     } catch (error) {
       _logger.error(new Error(error));
     }
@@ -14,10 +12,9 @@ module.exports = {
   updateOne: async function (conditions, newData) {
     try {
       // update and return the result
-      const updateResult = await KycModel.updateOne(conditions, {
+      return await KycModel.updateOne(conditions, {
         $set: newData,
       });
-      return updateResult;
     } catch (error) {
       _logger.error(new Error(error));
     }
@@ -28,6 +25,33 @@ module.exports = {
       return await KycModel.findOne(conditions);
     } catch (error) {
       _logger.error(new Error(error));
+    }
+  },
+
+  count: async function (conditions) {
+    try {
+      return await KycModel.countDocuments(conditions);
+    } catch (error) {
+      _logger.error(new Error(error));
+      return 0;
+    }
+  },
+
+  search: async function (conditions, pagination, sortConditions) {
+    try {
+      const conditionPopulate = {
+        path: 'userId',
+        select: 'address',
+      };
+
+      return await KycModel.find(conditions)
+        .populate(conditionPopulate)
+        .skip((pagination.page - 1) * pagination.pageSize)
+        .limit(pagination.pageSize)
+        .sort(sortConditions);
+    } catch (error) {
+      _logger.error(new Error(error));
+      return [];
     }
   },
 

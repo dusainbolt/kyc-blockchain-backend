@@ -25,7 +25,7 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/KycResponse',
+              $ref: '#/components/schemas/kyc_Response',
             },
           },
         },

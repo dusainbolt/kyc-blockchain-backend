@@ -8,7 +8,7 @@ module.exports = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/UserLogin',
+            $ref: '#/components/schemas/user_LoginBody',
           },
         },
       },
@@ -18,7 +18,7 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/UserResponse',
+              $ref: '#/components/schemas/user_LoginResponse',
             },
           },
         },
