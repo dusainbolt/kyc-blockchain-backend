@@ -57,4 +57,59 @@ module.exports = {
       },
     },
   },
+
+  KycUpdate: {
+    type: 'object',
+    properties: {
+      gender: {
+        type: 'string',
+        description: 'gender of user',
+        example: 'Male',
+      },
+      email: {
+        type: 'string',
+        description: 'email of user',
+        example: 'cuong@gmail.com',
+      },
+      firstName: {
+        type: 'string',
+        description: 'firstName of user',
+        example: 'firstName of user',
+      },
+      lastName: {
+        type: 'string',
+        description: 'lastName of user',
+        example: 'lastName of user',
+      },
+      fullName: {
+        type: 'string',
+        description: 'fullName of user',
+        example: 'fullName of user',
+      },
+      birthday: {
+        type: 'string',
+        description: 'birthday of user',
+        example: '2000-01-24',
+      },
+      phoneNumber: {
+        type: 'string',
+        description: 'phoneNumber of user',
+        example: '09258247293',
+      },
+      address: {
+        type: 'string',
+        description: 'address of user',
+        example: 'address user',
+      },
+      nowAddress: {
+        type: 'string',
+        description: 'nowAddress of user',
+        example: 'nowAddress user',
+      },
+    },
+  },
+
+  requestApprove: {
+    
+  }
 };

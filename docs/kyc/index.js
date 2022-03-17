@@ -1,7 +1,8 @@
 // const createUser = require("./create_user");
 // const getUserInfo = require("./get_user");
 const getKycInfo = require('./get_info_kyc');
-// const userUpdate = require("./update_user");
+const kycUpdate = require("./update_kyc");
+const requestApprove = require("./request_approve_kyc");
 // const userDelete = require("./delete_user");
 // const searchUser = require("./search_user");
 
@@ -15,9 +16,12 @@ module.exports = {
   '/kyc/info': {
     ...getKycInfo,
   },
-  // "/user/update": {
-  //   ...userUpdate,
-  // },
+  "/kyc/update": {
+    ...kycUpdate,
+  },
+  "/kyc/request": {
+    ...requestApprove,
+  },
   // "/user/delete": {
   //   ...userDelete,
   // },
