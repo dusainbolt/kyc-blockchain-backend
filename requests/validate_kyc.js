@@ -1,6 +1,5 @@
 const { body } = require('express-validator');
 const { KycModel } = require('../models');
-// const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ValidateKyc',
@@ -99,7 +98,7 @@ module.exports = {
       body('phoneNumber')
         .optional()
         .isMobilePhone()
-        .withMessage('Invalid mobile phone.')
+        .withMessage('Invalid phone number')
         .custom((value) => {
           return KycModel.findOne({ phoneNumber: value }).then((project) => {
             if (project) {

@@ -7,7 +7,7 @@ module.exports = {
       },
     ],
     summary: 'Update info of kyc',
-    operationId: 'updateKyc',
+    operationId: 'kycUpdate',
     parameters: [],
     requestBody: {
       content: {
@@ -19,14 +19,8 @@ module.exports = {
       },
     },
     responses: {
-      201: {
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/components/schemas/KycResponse',
-            },
-          },
-        },
+      200: {
+        description: 'Update successful',
       },
       500: {
         description: 'Server error',
