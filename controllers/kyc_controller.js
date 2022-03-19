@@ -11,7 +11,7 @@ const kycRepository = require('../repositories/kyc_repository');
 module.exports = {
   classname: 'KycController',
 
-  retrieve: async (req, res, next) => {
+  retrieve: async (req, res) => {
     // validate the input parameters
     const validate = validateRouter(req);
 
@@ -33,7 +33,7 @@ module.exports = {
       }
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
     }
   },
 
@@ -59,14 +59,11 @@ module.exports = {
 
       //create KYC
       const result = await kycRepository.create(credentials);
-      if (result) {
-        return handlerSuccess(req, res, result, res.__('Success'));
-      } else {
-        return handlerError(req, res, res.__('UNABLE_TO_CREATE'));
-      }
+
+      return handlerSuccess(req, res, result, res.__('Success'));
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
     }
   },
 
@@ -95,18 +92,14 @@ module.exports = {
       };
       //update KYC
       const result = await kycRepository.updateOne({ userId }, credentials);
-      if (result) {
-        return handlerSuccess(req, res, result, res.__('UPDATE_SUCCESS'));
-      } else {
-        return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
-      }
+      return handlerSuccess(req, res, result, res.__('UPDATE_SUCCESS'));
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
     }
   },
 
-  search: async (req, res, next) => {
+  search: async (req, res) => {
     try {
       // prepare pagination & sort conditions
       const { pagination, sortConditions } = renderPaginateSort(req.query);
@@ -123,19 +116,15 @@ module.exports = {
       const projectCount = await kycRepository.count(conditions);
       const paging = paginationGenerator(pagination, projectCount);
 
-      if (data) {
-        return handlerSuccess(
-          req,
-          res,
-          { data, paging },
-          res.__('RETRIEVE_SUCCESS')
-        );
-      } else {
-        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
-      }
+      return handlerSuccess(
+        req,
+        res,
+        { data, paging },
+        res.__('RETRIEVE_SUCCESS')
+      );
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
     }
   },
 
@@ -157,14 +146,35 @@ module.exports = {
         { status: KYC_STATUS.REQUEST }
       );
 
-      if (result) {
-        return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
-      } else {
-        return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
-      }
+      return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
+    }
+  },
+
+  confirmKyc: async (req, res) => {
+    try {
+      const userId = req.user.userId;
+
+      const kyc = await kycRepository.findOne({
+        userId,
+      });
+
+      // check status kyc
+      if (kyc.status != KYC_STATUS.EDITING) {
+        return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
+      }
+      // update status kyc
+      const result = await kycRepository.updateOne(
+        { userId },
+        { status: KYC_STATUS.REQUEST }
+      );
+
+      return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
+    } catch (error) {
+      _logger.error(new Error(error));
+      return handlerError(req, res, error.message);
     }
   },
 };

@@ -65,4 +65,4 @@ const KycSchema = new Schema(
   { usePushEach: true, timestamps: true }
 );
 
-module.exports = mongoose.model('KYC', KycSchema);
+module.exports = mongoose.model('Kyc', KycSchema);

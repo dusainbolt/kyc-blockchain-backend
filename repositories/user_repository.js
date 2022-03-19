@@ -14,109 +14,69 @@ const web3 = new Web3();
 
 module.exports = {
   create: async function (newAccountInfo) {
-    try {
-      const accountInfo = await UserModel.create(newAccountInfo);
-
-      return accountInfo;
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+    return UserModel.create(newAccountInfo);
   },
 
   findOneLogin: async function (conditions) {
-    try {
-      let user = await UserModel.findOne({ address: conditions.address });
+    let user = await UserModel.findOne({ address: conditions.address });
 
-      if (user) {
-        // Create token
-        const token = jwt.sign(
-          { userId: user._id, adress: user.address, role: user.role },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: process.env.EXPIRED_JWT_TOKEN,
-          }
-        );
+    if (user) {
+      // Create token
+      const token = jwt.sign(
+        { userId: user._id, adress: user.address, role: user.role },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: process.env.EXPIRED_JWT_TOKEN,
+        }
+      );
 
-        user = {
-          address: user.address,
-          token: token,
-        };
+      user = {
+        address: user.address,
+        token: token,
+      };
 
-        return user;
-      }
-    } catch (error) {
-      _logger.error(new Error(error));
+      return user;
     }
   },
 
   findOne: async function (conditions) {
-    try {
-      return await UserModel.findOne(conditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+    return UserModel.findOne(conditions);
   },
 
   updateOne: async function (id, newData) {
-    try {
-      // manually update the password
-      if (newData.password) {
-        newData.password = await bcrypt.hash(
-          newData.password,
-          process.env.PASSWORD_SALT_FACTOR * 1
-        );
-      }
-
-      // update and return the result
-      const updateResult = await UserModel.updateOne(id, { $set: newData });
-      return updateResult;
-    } catch (error) {
-      _logger.error(new Error(error));
+    if (newData.password) {
+      newData.password = await bcrypt.hash(
+        newData.password,
+        process.env.PASSWORD_SALT_FACTOR * 1
+      );
     }
+
+    // update and return the result
+    const updateResult = await UserModel.updateOne(id, { $set: newData });
+    return updateResult;
   },
 
   deleteOne: async function (conditions) {
-    try {
-      return await UserModel.deleteOne(conditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+    return UserModel.deleteOne(conditions);
   },
 
   count: async function (conditions) {
-    try {
-      const userCount = await UserModel.countDocuments(conditions);
-      return userCount;
-    } catch (error) {
-      _logger.error(new Error(error));
-      return 0;
-    }
+    return UserModel.countDocuments(conditions);
   },
 
   search: async function (conditions, pagination) {
-    try {
-      const userList = await UserModel.find(conditions)
-        .select('_id username email address isAdmin status createdAt updatedAt')
-        .skip((pagination.page - 1) * pagination.pageSize)
-        .limit(pagination.pageSize)
-        .sort({ createdAt: -1 });
-      return userList;
-    } catch (error) {
-      _logger.error(new Error(error));
-      return [];
-    }
+    return UserModel.find(conditions)
+      .select('_id username email address isAdmin status createdAt updatedAt')
+      .skip((pagination.page - 1) * pagination.pageSize)
+      .limit(pagination.pageSize)
+      .sort({ createdAt: -1 });
   },
 
   validateAdmin: async function (userId) {
-    try {
-      const user = await UserModel.findOne({ _id: new ObjectID(userId) });
-      if (user.isAdmin) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      _logger.error(new Error(error));
+    const user = await UserModel.findOne({ _id: new ObjectID(userId) });
+    if (user.isAdmin) {
+      return true;
+    } else {
       return false;
     }
   },
@@ -149,27 +109,23 @@ module.exports = {
 
   //sign jwt
   signJWT: async function (credential) {
-    try {
-      // create token
-      const token = jwt.sign(
-        {
-          userId: credential._id,
-          adress: credential.address,
-          role: credential.role,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: process.env.EXPIRED_JWT_TOKEN,
-        }
-      );
+    // create token
+    const token = jwt.sign(
+      {
+        userId: credential._id,
+        adress: credential.address,
+        role: credential.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.EXPIRED_JWT_TOKEN,
+      }
+    );
 
-      user = {
-        address: credential.address,
-        token: token,
-      };
-      return user;
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+    user = {
+      address: credential.address,
+      token: token,
+    };
+    return user;
   },
 };

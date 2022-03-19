@@ -119,4 +119,21 @@ module.exports = {
         .withMessage('Missing nowAddress parameter.'),
     ];
   },
+
+  getKyc: () => {
+    return [
+      body('kycId')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing project id parameter.')
+        .custom((value) => {
+          if (!ObjectID.isValid(value)) {
+            return Promise.reject('Invalid project id.');
+          } else {
+            return Promise.resolve(true);
+          }
+        }),
+    ];
+  },
 };

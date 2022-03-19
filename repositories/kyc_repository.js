@@ -1,79 +1,52 @@
 const { KycModel } = require('../models');
 
 module.exports = {
-  create: async function (conditions) {
-    try {
-      return await KycModel.create(conditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  create: function (conditions) {
+    return KycModel.create(conditions);
   },
 
-  updateOne: async function (conditions, newData) {
-    try {
-      // update and return the result
-      return await KycModel.updateOne(conditions, {
-        $set: newData,
-      });
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  updateOne: function (conditions, newData) {
+    return KycModel.updateOne(conditions, {
+      $set: newData,
+    });
   },
 
-  findOne: async function (conditions) {
-    try {
-      return await KycModel.findOne(conditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  findOne: function (conditions) {
+    return KycModel.findOne(conditions);
   },
 
-  count: async function (conditions) {
-    try {
-      return await KycModel.countDocuments(conditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-      return 0;
-    }
+  count: function (conditions) {
+    return KycModel.countDocuments(conditions);
   },
 
-  search: async function (conditions, pagination, sortConditions) {
-    try {
-      const conditionPopulate = {
-        path: 'userId',
-        select: 'address',
-      };
+  search: function (conditions, pagination, sortConditions) {
+    const conditionPopulate = {
+      path: 'userId',
+      select: 'address',
+    };
 
-      return await KycModel.find(conditions)
-        .populate(conditionPopulate)
-        .skip((pagination.page - 1) * pagination.pageSize)
-        .limit(pagination.pageSize)
-        .sort(sortConditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-      return [];
-    }
+    return KycModel.find(conditions)
+      .populate(conditionPopulate)
+      .skip((pagination.page - 1) * pagination.pageSize)
+      .limit(pagination.pageSize)
+      .sort(sortConditions);
   },
 
   getCredential: function (body) {
-    try {
-      return {
-        ...(body.email && {
-          email: body.email,
-        }),
-        ...(body.phoneNumber && {
-          phoneNumber: body.phoneNumber,
-        }),
-        firstName: body.firstName,
-        lastName: body.lastName,
-        fullName: body.fullName,
-        gender: body.gender,
-        birthday: body.birthday,
-        address: body.address,
-        nowAddress: body.nowAddress,
-      };
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+    return {
+      ...(body.email && {
+        email: body.email,
+      }),
+      ...(body.phoneNumber && {
+        phoneNumber: body.phoneNumber,
+      }),
+      firstName: body.firstName,
+      lastName: body.lastName,
+      fullName: body.fullName,
+      gender: body.gender,
+      birthday: body.birthday,
+      address: body.address,
+      nowAddress: body.nowAddress,
+    };
   },
 };

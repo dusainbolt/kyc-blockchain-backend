@@ -45,11 +45,11 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
-  login: async (req, res, next) => {
+  login: async (req, res) => {
     // validate the input parameters
     const validate = validateRouter(req);
 
@@ -97,15 +97,10 @@ module.exports = {
 
       //create token
       const result = await userRepository.signJWT(user);
-
-      if (result) {
-        return handlerSuccess(req, res, result, res.__('Success'));
-      } else {
-        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
-      }
+      return handlerSuccess(req, res, result, res.__('Success'));
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
     }
   },
 
@@ -142,7 +137,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -182,7 +177,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -213,7 +208,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -265,7 +260,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -287,7 +282,7 @@ module.exports = {
   //     return handlerSuccess(req, res, { address }, res.__(verify.message));
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 };

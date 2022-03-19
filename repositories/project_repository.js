@@ -1,94 +1,55 @@
-const { ProjectModel, UserModel } = require('../models');
+const { ProjectModel } = require('../models');
 
 module.exports = {
-  create: async function (conditions) {
-    try {
-      const project = await ProjectModel.create(conditions);
-
-      // const user = await UserModel.findOne({ _id: conditions.adminId });
-
-      // update project id into user
-      // user.projects.push(project._id);
-      // user.save();
-
-      return project;
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  create: function (conditions) {
+    return ProjectModel.create(conditions);
   },
 
-  findOne: async function (conditions) {
-    try {
-      return await ProjectModel.findOne(conditions);
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  findOne: function (conditions) {
+    return ProjectModel.findOne(conditions);
   },
 
-  updateOne: async function (id, newData) {
-    try {
-      // update and return the result
-      const updateResult = await ProjectModel.updateOne(id, { $set: newData });
-      return updateResult;
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  updateOne: function (id, newData) {
+    return ProjectModel.updateOne(id, { $set: newData });
   },
 
-  findAndDelete: async function (conditions) {
-    try {
-      const project = await ProjectModel.findOneAndDelete(conditions);
+  // findAndDelete:  function (conditions) {
+  //   const project = await ProjectModel.findOneAndDelete(conditions);
 
-      if (project) {
-        const user = await UserModel.findOne({ _id: conditions.adminId });
-        const index = user.projects.indexOf(project._id);
-        if (index > -1) {
-          user.projects.splice(index, 1); // 2nd parameter means remove one item only
-        }
-        user.save();
-      }
+  //   if (project) {
+  //     const user = await UserModel.findOne({ _id: conditions.adminId });
+  //     const index = user.projects.indexOf(project._id);
+  //     if (index > -1) {
+  //       user.projects.splice(index, 1); // 2nd parameter means remove one item only
+  //     }
+  //     user.save();
+  //   }
+  //   return project;
+  // },
 
-      return project;
-    } catch (error) {
-      _logger.error(new Error(error));
-    }
+  count: function (conditions) {
+    return ProjectModel.countDocuments(conditions);
   },
 
-  count: async function (conditions) {
-    try {
-      const userCount = await ProjectModel.countDocuments(conditions);
-      return userCount;
-    } catch (error) {
-      _logger.error(new Error(error));
-      return 0;
-    }
+  search: function (conditions, pagination) {
+    return ProjectModel.find(conditions)
+      .skip((pagination.page - 1) * pagination.pageSize)
+      .limit(pagination.pageSize)
+      .sort({ createdAt: -1 });
   },
 
-  search: async function (conditions, pagination) {
-    try {
-      const projectList = await ProjectModel.find(conditions)
-        .skip((pagination.page - 1) * pagination.pageSize)
-        .limit(pagination.pageSize)
-        .sort({ createdAt: -1 });
-      return projectList;
-    } catch (error) {
-      _logger.error(new Error(error));
-      return [];
-    }
-  },
-
-  validateProject: async function (userId, projectId) {
-    try {
-      const user = await UserModel.findOne({ _id: userId });
-      const index = user.projects.indexOf(projectId);
-      if (index > -1) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      _logger.error(new Error(error));
-      return false;
-    }
-  },
+  // validateProject: async function (userId, projectId) {
+  //   try {
+  //     const user = await UserModel.findOne({ _id: userId });
+  //     const index = user.projects.indexOf(projectId);
+  //     if (index > -1) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     _logger.error(new Error(error));
+  //     return false;
+  //   }
+  // },
 };

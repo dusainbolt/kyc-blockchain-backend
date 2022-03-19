@@ -11,7 +11,7 @@ const userRepository = require('../repositories/user_repository');
 module.exports = {
   classname: 'ProjectController',
 
-  create: async (req, res, next) => {
+  create: async (req, res) => {
     // validate the input parameters
     const validate = validateRouter(req);
 
@@ -39,14 +39,10 @@ module.exports = {
       };
       // create user
       const result = await projectRepository.create(credentials);
-      if (result) {
-        return handlerSuccess(req, res, result, res.__('REGISTER_SUCCESS'));
-      } else {
-        return handlerError(req, res, res.__('UNABLE_TO_REGISTER'));
-      }
+      return handlerSuccess(req, res, result, res.__('REGISTER_SUCCESS'));
     } catch (error) {
       _logger.error(new Error(error));
-      next(error);
+      return handlerError(req, res, error.message);
     }
   },
 
@@ -71,7 +67,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -103,7 +99,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -132,7 +128,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 
@@ -174,7 +170,7 @@ module.exports = {
   //     }
   //   } catch (error) {
   //     _logger.error(new Error(error));
-  //     next(error);
+  //     return handlerError(req, res, error.message);
   //   }
   // },
 };
