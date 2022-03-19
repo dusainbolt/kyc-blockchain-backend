@@ -1,4 +1,9 @@
-const { validateRouter } = require('../utils/helper');
+const {
+  validateRouter,
+  renderPaginateSort,
+  paginationGenerator,
+  renderKeyCondition,
+} = require('../utils/helper');
 const { handlerSuccess, handlerError } = require('../utils/response_handler');
 const { KYC_STATUS } = require('../utils/consts');
 const kycRepository = require('../repositories/kyc_repository');
@@ -8,13 +13,12 @@ module.exports = {
 
   retrieve: async (req, res, next) => {
     // validate the input parameters
-    const validate = validateRouter(req, res);
+    const validate = validateRouter(req);
 
     // handle the error, stop
     if (validate) {
       return handlerError(req, res, validate);
     }
-
     // valid parameters
     try {
       // retrieve kyc record
@@ -35,7 +39,7 @@ module.exports = {
 
   create: async (req, res) => {
     // validate the input parameters
-    const validate = validateRouter(req, res);
+    const validate = validateRouter(req);
 
     // handle the error, stop
     if (validate) {
@@ -68,7 +72,7 @@ module.exports = {
 
   update: async (req, res) => {
     // validate the input parameters
-    const validate = validateRouter(req, res);
+    const validate = validateRouter(req);
 
     // handle the error, stop
     if (validate) {
@@ -95,6 +99,39 @@ module.exports = {
         return handlerSuccess(req, res, result, res.__('UPDATE_SUCCESS'));
       } else {
         return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
+      }
+    } catch (error) {
+      _logger.error(new Error(error));
+      next(error);
+    }
+  },
+
+  search: async (req, res, next) => {
+    try {
+      // prepare pagination & sort conditions
+      const { pagination, sortConditions } = renderPaginateSort(req.query);
+
+      // prepare search conditions
+      const conditions = renderKeyCondition(req.query, 'email');
+
+      const data = await kycRepository.search(
+        conditions,
+        pagination,
+        sortConditions
+      );
+
+      const projectCount = await kycRepository.count(conditions);
+      const paging = paginationGenerator(pagination, projectCount);
+
+      if (data) {
+        return handlerSuccess(
+          req,
+          res,
+          { data, paging },
+          res.__('RETRIEVE_SUCCESS')
+        );
+      } else {
+        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
       }
     } catch (error) {
       _logger.error(new Error(error));

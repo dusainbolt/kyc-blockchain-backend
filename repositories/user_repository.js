@@ -140,7 +140,6 @@ module.exports = {
     const recover = await web3.eth.accounts.recover(message, signature);
     const recoverConvert = web3.utils.toChecksumAddress(recover);
     address = web3.utils.toChecksumAddress(address);
-    console.log('recover: ', recover);
     if (recoverConvert && recoverConvert === address) {
       return { result: true, message: 'Success' };
     } else {

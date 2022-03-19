@@ -1,5 +1,5 @@
 module.exports = {
-  KycResponse: {
+  kyc_Response: {
     type: 'object',
     properties: {
       _id: {

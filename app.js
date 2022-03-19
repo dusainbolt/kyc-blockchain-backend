@@ -53,7 +53,10 @@ app.use('/api', apiRouter);
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(docs, { explorer: true })
+  swaggerUi.setup(docs, {
+    explorer: true,
+    customSiteTitle: 'KYC Platform APIs Document',
+  })
 );
 
 // serve static files

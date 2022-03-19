@@ -1,7 +1,8 @@
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
+const consts = require('./consts');
 
 exports._errorFormatter = (errors) => {
-  let res = [];
+  const res = [];
 
   for (let i = 0; i < errors.length; i++) {
     res.push(errors[i].msg);
@@ -10,7 +11,7 @@ exports._errorFormatter = (errors) => {
   return res.join('\n');
 };
 
-exports.validateRouter = (req, res) => {
+exports.validateRouter = (req) => {
   let errorMsg = undefined;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -26,12 +27,39 @@ exports.paginationGenerator = (pagination, itemCount) => {
     totalCount: itemCount,
     totalPage: Math.ceil(itemCount / pagination.pageSize),
   };
-}
+};
 
-exports.getValueInEnum = (obj) => {
-  const arrayVal = [];
-  for (const property in obj) {
-    arrayVal.push(`${obj[property]}`);
+exports.convertConditionsSort = (string) => {
+  const arrayString = string.split(',');
+  let result = {};
+  for (index in arrayString) {
+    const element = arrayString[index];
+    const fieldName = element?.substring(1);
+    result = {
+      ...result,
+      [fieldName]:
+        element?.indexOf('-') !== -1 ? consts.SORT.DESC : consts.SORT.ASC,
+    };
   }
-  return arrayVal;
+  return result;
+};
+
+exports.renderPaginateSort = (query) => {
+  return {
+    pagination: {
+      page: parseInt(query.page) || 1,
+      pageSize: parseInt(query.pageSize) || 10,
+    },
+    sortConditions: query.sortBy
+      ? this.convertConditionsSort(query.sortBy)
+      : { createdAt: consts.SORT.DESC },
+  };
+};
+
+exports.renderKeyCondition = (query, fieldName = 'fieldName') => {
+  if (query[fieldName] && query[fieldName]?.length > 0) {
+    const regexName = new RegExp(query[fieldName], 'i'); // i for case insensitive
+    return { [fieldName]: { $regex: regexName } };
+  }
+  return {};
 };

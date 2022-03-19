@@ -1,4 +1,4 @@
-const {createLogger, format} = require('winston');
+const { createLogger, format } = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 const path = require('path');
 
@@ -15,7 +15,7 @@ module.exports = createLogger({
       // stack trace or message
       if (log.stack) return `[${log.timestamp}] [${log.level}] ${log.stack}`;
       return `[${log.timestamp}] [${log.level}] ${log.message}`;
-    }),
+    })
   ),
   transports: [
     new DailyRotateFile({
