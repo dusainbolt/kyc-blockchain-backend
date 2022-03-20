@@ -15,6 +15,10 @@ module.exports = {
     return KycModel.findOne(conditions);
   },
 
+  findOneById: function (id) {
+    return KycModel.findById(id);
+  },
+
   count: function (conditions) {
     return KycModel.countDocuments(conditions);
   },

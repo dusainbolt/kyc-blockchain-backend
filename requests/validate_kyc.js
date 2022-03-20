@@ -1,5 +1,7 @@
 const { body } = require('express-validator');
 const { KycModel } = require('../models');
+const { KYC_STATUS } = require('../utils/consts');
+const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ValidateKyc',
@@ -126,14 +128,17 @@ module.exports = {
         .trim()
         .not()
         .isEmpty()
-        .withMessage('Missing project id parameter.')
+        .withMessage('Missing kyc id parameter.')
         .custom((value) => {
           if (!ObjectID.isValid(value)) {
-            return Promise.reject('Invalid project id.');
+            return Promise.reject('Invalid object id.');
           } else {
             return Promise.resolve(true);
           }
         }),
+      body('status')
+        .isIn([KYC_STATUS.APPROVE, KYC_STATUS.REJECT])
+        .withMessage('Invalid status.'),
     ];
   },
 };

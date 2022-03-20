@@ -1,25 +1,12 @@
-// const { validationResult } = require('express-validator');
-const { validateRouter } = require('../utils/helper');
-// const consts = require('../utils/consts');
 const { handlerError, handlerSuccess } = require('../utils/response_handler');
-// const logger = require('../utils/logger');
 const { v4: uuidv4 } = require('uuid');
 const projectRepository = require('../repositories/project_repository');
 const userRepository = require('../repositories/user_repository');
-// const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ProjectController',
 
   create: async (req, res) => {
-    // validate the input parameters
-    const validate = validateRouter(req);
-
-    // handle the error, stop
-    if (validate) {
-      return handlerError(req, res, validate);
-    }
-    // valid parameters
     try {
       // find user
       const user = await userRepository.findOne({

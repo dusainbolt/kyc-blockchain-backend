@@ -9,28 +9,49 @@ const {
 const { validateUser, validateProject, validateKyc } = require('../requests');
 
 const auth = require('../middleware/auth');
+const authAdmin = require('../middleware/auth_admin');
+const validate = require('../middleware/validate');
 
 /* User APIs */
-router.post('/user/login', validateUser.verifySign(), userController.login);
+router.post(
+  '/user/login',
+  validateUser.verifySign(),
+  validate,
+  userController.login
+);
 
 /* Project APIs */
 router.post(
   '/project/create',
   validateProject.create(),
+  validate,
   auth,
   projectController.create
 );
 
 /* KYC APIs */
-router.post('/kyc/create', auth, validateKyc.create(), kycController.create);
-router.put('/kyc/update', auth, validateKyc.update(), kycController.update);
+router.post(
+  '/kyc/create',
+  auth,
+  validateKyc.create(),
+  validate,
+  kycController.create
+);
+router.put(
+  '/kyc/update',
+  validateKyc.update(),
+  validate,
+  auth,
+  kycController.update
+);
 router.get('/kyc/info', auth, kycController.retrieve);
 router.get('/kyc/search', auth, kycController.search);
 router.patch('/kyc/request', auth, kycController.requestConfirmKyc);
 router.patch(
   '/kyc/confirm',
-  auth,
   validateKyc.getKyc(),
+  validate,
+  authAdmin,
   kycController.confirmKyc
 );
 
