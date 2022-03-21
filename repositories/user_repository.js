@@ -1,6 +1,4 @@
 const { UserModel } = require('../models');
-// const consts = require('../utils/consts');
-// const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -9,8 +7,10 @@ const ObjectID = require('mongodb').ObjectID;
 const BN = require('ethers').BigNumber;
 const AES = require('crypto-js').AES;
 const Utf8 = require('crypto-js').enc.Utf8;
-
 const web3 = new Web3();
+const consts = require('../utils/consts');
+
+const { DB_STATUS, USER_ROLE } = consts;
 
 module.exports = {
   create: async function (newAccountInfo) {
@@ -41,6 +41,10 @@ module.exports = {
 
   findOne: async function (conditions) {
     return UserModel.findOne(conditions);
+  },
+
+  findOneById: async function (id) {
+    return UserModel.findById(id);
   },
 
   updateOne: async function (id, newData) {
@@ -79,6 +83,10 @@ module.exports = {
     } else {
       return false;
     }
+  },
+
+  isAdminActive: function (user) {
+    return user.status == DB_STATUS.ACTIVE && user.role == USER_ROLE.ADMIN;
   },
 
   checkSignature: async function (address, message, signature) {

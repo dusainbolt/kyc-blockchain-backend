@@ -7,19 +7,12 @@ const {
 const { handlerSuccess, handlerError } = require('../utils/response_handler');
 const { KYC_STATUS } = require('../utils/consts');
 const kycRepository = require('../repositories/kyc_repository');
+const kycHistoryRepository = require('../repositories/kyc_history_repository');
 
 module.exports = {
   classname: 'KycController',
 
   retrieve: async (req, res) => {
-    // validate the input parameters
-    const validate = validateRouter(req);
-
-    // handle the error, stop
-    if (validate) {
-      return handlerError(req, res, validate);
-    }
-    // valid parameters
     try {
       // retrieve kyc record
       const kyc = await kycRepository.findOne({
@@ -38,14 +31,6 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    // validate the input parameters
-    const validate = validateRouter(req);
-
-    // handle the error, stop
-    if (validate) {
-      return handlerError(req, res, validate);
-    }
-
     try {
       //get userId from user verified access token
       const userId = req.user.userId;
@@ -68,18 +53,8 @@ module.exports = {
   },
 
   update: async (req, res) => {
-    // validate the input parameters
-    const validate = validateRouter(req);
-
-    // handle the error, stop
-    if (validate) {
-      return handlerError(req, res, validate);
-    }
-    //valid parameters
     try {
-      //get userId from user verified access token
       const userId = req.user.userId;
-
       //check status kyc
       const kyc = await kycRepository.findOne({ userId });
 
@@ -141,12 +116,22 @@ module.exports = {
         return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
       }
       // update status kyc
-      const result = await kycRepository.updateOne(
-        { userId },
-        { status: KYC_STATUS.REQUEST }
-      );
+      kyc.status = KYC_STATUS.REQUEST;
 
-      return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
+      // prepare to create kyc history
+      const creKycHistory = {
+        kycId: kyc._id,
+        userId,
+        status: KYC_STATUS.REQUEST,
+        message: '',
+      };
+
+      await Promise.all([
+        kyc.save(),
+        kycHistoryRepository.create(creKycHistory),
+      ]);
+
+      return handlerSuccess(req, res, true, res.__('REQUEST_SUCCESS'));
     } catch (error) {
       _logger.error(new Error(error));
       return handlerError(req, res, error.message);
@@ -155,23 +140,30 @@ module.exports = {
 
   confirmKyc: async (req, res) => {
     try {
-      const userId = req.user.userId;
-
-      const kyc = await kycRepository.findOne({
-        userId,
-      });
+      const userId = req.admin.userId;
+      const kyc = await kycRepository.findOneById(req.body.kycId);
 
       // check status kyc
-      if (kyc.status != KYC_STATUS.EDITING) {
+      if (kyc.status != KYC_STATUS.REQUEST) {
         return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
       }
-      // update status kyc
-      const result = await kycRepository.updateOne(
-        { userId },
-        { status: KYC_STATUS.REQUEST }
-      );
 
-      return handlerSuccess(req, res, result, res.__('REQUEST_SUCCESS'));
+      // change status kyc
+      kyc.status = req.body.status;
+      // prepare to create kyc history
+      const creKycHistory = {
+        kycId: kyc._id,
+        userId,
+        status: req.body.status,
+        message: req.body.message || '',
+      };
+
+      await Promise.all([
+        kyc.save(),
+        kycHistoryRepository.create(creKycHistory),
+      ]);
+
+      return handlerSuccess(req, res, true, res.__('REQUEST_SUCCESS'));
     } catch (error) {
       _logger.error(new Error(error));
       return handlerError(req, res, error.message);

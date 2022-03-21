@@ -1,10 +1,5 @@
-const { validateRouter } = require('../utils/helper');
-// const consts = require("../utils/consts");
 const { handlerSuccess, handlerError } = require('../utils/response_handler');
-// const logger = require("../utils/logger");
-
 const userRepository = require('../repositories/user_repository');
-// const ObjectID = require("mongodb").ObjectID;
 
 module.exports = {
   classname: 'UserController',
@@ -50,15 +45,6 @@ module.exports = {
   // },
 
   login: async (req, res) => {
-    // validate the input parameters
-    const validate = validateRouter(req);
-
-    // handle the error, stop
-    if (validate) {
-      return handlerError(req, res, validate);
-    }
-
-    // valid parameters
     try {
       // prepare to login
       const accountLogin = {
