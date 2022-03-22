@@ -54,5 +54,6 @@ router.patch(
   authAdmin,
   kycController.confirmKyc
 );
+router.get('/kyc/request_deploy', auth, kycController.requestDeploy);
 
 module.exports = router;

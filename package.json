@@ -18,6 +18,7 @@
     "express-validator": "^6.10.0",
     "http-errors": "~1.6.3",
     "i18n": "^0.13.2",
+    "ipfs-http-client": "50.1.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.3",
     "morgan": "~1.9.1",
@@ -28,7 +29,8 @@
     "uuid": "^8.3.2",
     "web3": "^1.7.0",
     "winston": "^3.4.0",
-    "winston-daily-rotate-file": "^4.5.5"
+    "winston-daily-rotate-file": "^4.5.5",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
