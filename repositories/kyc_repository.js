@@ -40,7 +40,7 @@ module.exports = {
   getCreateKYCMessageHash: function (_uid, _address) {
     return ethers.utils.solidityKeccak256(
       ['string', 'address'],
-      [_uid, _address]
+      [_uid, _address?.toLowerCase()]
     );
   },
 

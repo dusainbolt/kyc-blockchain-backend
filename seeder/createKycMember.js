@@ -3,61 +3,75 @@ const KYCAbi = require('../contracts/KYCPlatform.json');
 
 const web3 = new Web3('ws://localhost:8545');
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.json')[env];
-
 const _ = {
-  publicKey: '0x7c081f25d0c685753c0762772c93EE29D257278B',
+  contractAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  publicKey: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
   privateKey:
-    '49c480b02586f00d80ac5d1ea824bfc4490826f33ebc720d06d7a385a1551fe2',
-  encodeABI:
-    '0xfa397d22000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000002e516d567a39425476794b52596e7437696e457946734d4e4863734a547477327039504d435a57545155394a396d330000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041bb86aa7819756a0a6cee587ea52e75858414d1cbe7e3e47bf61bd863e82b7d40552a36012e643ed4b73775608874ab4aa4d237e4efd1f736094acd9493d3ed381b00000000000000000000000000000000000000000000000000000000000000',
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+  publicKeyUser: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+  privateKeyUser:
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+  uid: 'QmQJqbkNjqJU7A194KTpLjPLYAw6je3onxre5R1P4bv7gY',
 };
 
-const kycPlatform = new web3.eth.Contract(KYCAbi.abi, config.contractAddress);
+const KYCContract = new web3.eth.Contract(KYCAbi.abi, _.contractAddress);
 
-const creaKycMember = async () => {
+const getMessageHash = async () => {
+  console.log('_.uid, _.publicKeyUser', _.uid, _.publicKeyUser);
+  const hash = await KYCContract.methods
+    .getCreateKYCMessageHash(_.uid, _.publicKeyUser)
+    .call();
+  return hash;
+};
+
+const createKYCMember = async () => {
   try {
-    console.log('owner: ', await kycPlatform.methods.owner().call());
-
-    // get gas price
-    const gasPrice = await web3.eth.getGasPrice();
-    // estimate gas
+    const hash = await getMessageHash();
+    console.log('hash =====> ', hash);
+    ('0x99d85ccdf7774de25d481acb0be1ac637ea0b32a353bb06c2e718cab1d02632b');
+    ('0x99d85ccdf7774de25d481acb0be1ac637ea0b32a353bb06c2e718cab1d02632b');
+    console.log('===========> START signature: ');
     const signature =
-      '0x058bc66f0fa29c199e00597918819506e5929780d7b247bc530cd55ed13c219c31fb5c94fe0cd75abe4af1bf194d3e74387c1474bb7ddd72837345df215ba4f71b';
-    // const encodedABI = await RewardPool.methods
-    //   .claimReward("1000000", "0", signature)
-    //   .encodeABI();
+      '0x4819639e6a8d11a647dffdc7a9497055e0d730d47ced2e5f1b603fa8f33edd1c1d0d26957d77a34c7829bd24a3f1186b10104ab8ce0087ae7f49d22607c5bed51b';
+    console.log('signature =====> ', signature);
+    ('0xff81348a2e219c8b904a96286206bab6918867f7f5cc5abbf0b1c2d6f081c0bc7e1b692d25b71ca4ddeee46a4bcc954c5d814046455568eb1322650634c67b8f1b');
+    ('0xff81348a2e219c8b904a96286206bab6918867f7f5cc5abbf0b1c2d6f081c0bc7e1b692d25b71ca4ddeee46a4bcc954c5d814046455568eb1322650634c67b8f1b');
+    console.log('******StartMintNFT******');
+    const encodedABI =
+      '0xfa397d22000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000002e516d555639577a5839337457316a66665556425663584d714c5562694769326938514d635a58395877734a6e68440000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041fccdeb92e380e92971e4eeebcaf4cb8a2da2b8b9bcd726549b78f9e56d505a542eb900d8d8374d773af7c154407bf296ded3fa6c732b9bf4ecc85b2aee4cf9001c00000000000000000000000000000000000000000000000000000000000000';
+    console.log('encodeABI: ', _.uid, signature);
+    console.log('encodedABI =====> ', encodedABI);
+    ('0xfa397d22000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000002e516d514a71626b4e6a714a5537413139344b54704c6a504c594177366a65336f6e787265355231503462763767590000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041ff81348a2e219c8b904a96286206bab6918867f7f5cc5abbf0b1c2d6f081c0bc7e1b692d25b71ca4ddeee46a4bcc954c5d814046455568eb1322650634c67b8f1b00000000000000000000000000000000000000000000000000000000000000');
+    ('0xfa397d22000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000002e516d514a71626b4e6a714a5537413139344b54704c6a504c594177366a65336f6e787265355231503462763767590000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041ff81348a2e219c8b904a96286206bab6918867f7f5cc5abbf0b1c2d6f081c0bc7e1b692d25b71ca4ddeee46a4bcc954c5d814046455568eb1322650634c67b8f1b00000000000000000000000000000000000000000000000000000000000000');
+    const gasPrice = await web3.eth.getGasPrice();
+    console.log('gasPrice =====> ', gasPrice);
+    const gas = await KYCContract.methods
+      .createKYCMember(_.uid, signature)
+      .estimateGas({ from: _.publicKeyUser });
+    console.log('gas =====> ', gas);
 
-    // console.log("==> encodeABI: ", encodedABI == _.encodeABI);
-
-    const gas = await kycPlatform.methods
-      .createKYCMember(
-        'bafybeib6gjm35dvovwvvqpt6afniqdytwnchnqkaskwyakrluy5mydlwf4',
-        signature
-      )
-      .estimateGas({ from: _.publicKey });
-
-    // create tx transaction
     const tx = {
-      from: _.publicKey,
+      from: _.publicKeyUser,
       to: _.contractAddress,
       gas,
       gasPrice,
-      data: _.encodeABI,
-      nonce: web3.eth.getTransactionCount(_.publicKey),
+      data: encodedABI,
+      nonce: web3.eth.getTransactionCount(_.publicKeyUser),
     };
 
-    // sign transaction and send
-    const signedTx = await web3.eth.accounts.signTransaction(tx, _.privateKey);
+    const signedTx = await web3.eth.accounts.signTransaction(
+      tx,
+      _.privateKeyUser
+    );
     const receipt = await web3.eth.sendSignedTransaction(
       signedTx.rawTransaction
     );
     console.log('receipt =====> ', receipt);
+    console.log('******EndMintNFT******');
     return receipt.transactionHash;
   } catch (error) {
-    console.log(`ERROR: `, error);
+    console.log(`Mint NFT ERROR: `, error);
   }
 };
 
-creaKycMember();
+createKYCMember();

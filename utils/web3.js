@@ -12,6 +12,9 @@ class Web3Utils {
 
     return contractKYC.methods.createKYCMember(uid, signature).encodeABI();
   }
+  static toCheckSum(address) {
+    return web3.utils.toChecksumAddress(address);
+  }
 }
 
 module.exports = Web3Utils;
