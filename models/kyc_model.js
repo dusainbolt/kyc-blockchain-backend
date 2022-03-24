@@ -15,6 +15,10 @@ const KycSchema = new Schema(
       required: true,
       unique: true,
     },
+    uid: {
+      type: String,
+      unique: true,
+    },
     firstName: {
       type: String,
       required: true,

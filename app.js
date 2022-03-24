@@ -10,7 +10,7 @@ const i18n = require('i18n');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const docs = require('./docs');
-// const eventListener = require('./event');
+const eventListener = require('./event');
 
 const apiRouter = require('./routes/api');
 
@@ -77,6 +77,6 @@ app.use(function (err, req, res) {
   res.render('error');
 });
 
-// eventListener();
+eventListener();
 
 module.exports = app;

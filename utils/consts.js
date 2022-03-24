@@ -9,7 +9,7 @@ module.exports = {
     APPROVE: 2,
     REJECT: 3,
     DEPLOYED: 4,
-    RECEIVE_ABI_CODE: 6,
+    RECEIVE_ABI_CODE: 5,
   },
   SORT: { FIELD: 'createdAt', ASC: 1, DESC: -1 },
 };

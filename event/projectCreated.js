@@ -1,4 +1,4 @@
-function projectCreated(event) {
-  console.log('====> event: ', event);
+function kycCreated(event) {
+  console.log('====> ProjectCreated: ', event);
 }
-module.exports = projectCreated;
+module.exports = kycCreated;
