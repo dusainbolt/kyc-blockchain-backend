@@ -21,6 +21,8 @@ async function projectCreated(event) {
     };
 
     kyc.uid = uid;
+    kyc.status = KYC_STATUS.DEPLOYED;
+
     await Promise.all([kyc.save(), kycHistoryRepository.create(creKycHistory)]);
   } catch (error) {
     _logger.error(new Error(error));

@@ -38,3 +38,6 @@ function eventListener() {
 module.exports = eventListener;
 // "providerUrl": "wss://rinkeby.infura.io/ws/v3/565ba53dd573484da0eb2adc77968b97",
 // "contractAddress": "0x43Fd5B58646d033A5a31F1073Fd919c34Cdc7c72"
+
+// "providerUrl": "ws://localhost:8545",
+// "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"

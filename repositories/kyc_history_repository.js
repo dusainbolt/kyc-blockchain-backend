@@ -8,4 +8,15 @@ module.exports = {
   findOne: function (conditions) {
     return KycHistoryModel.findOne(conditions);
   },
+
+  count: function (conditions) {
+    return KycHistoryModel.countDocuments(conditions);
+  },
+
+  search: function (conditions, pagination, sortConditions) {
+    return KycHistoryModel.find(conditions)
+      .skip((pagination.page - 1) * pagination.pageSize)
+      .limit(pagination.pageSize)
+      .sort(sortConditions);
+  },
 };
