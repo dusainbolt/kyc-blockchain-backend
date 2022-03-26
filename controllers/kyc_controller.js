@@ -60,7 +60,7 @@ module.exports = {
       //check status kyc
       const kyc = await kycRepository.findOne({ userId });
 
-      if (!(kyc.status == KYC_STATUS.EDITING)) {
+      if (!kycRepository.checkEditable(kyc.status)) {
         return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
       }
       // prepare to update kyc
@@ -114,7 +114,7 @@ module.exports = {
       });
 
       // check status kyc
-      if (kyc.status != KYC_STATUS.EDITING) {
+      if (!kycRepository.checkEditable(kyc.status)) {
         return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
       }
       // update status kyc

@@ -7,11 +7,12 @@ module.exports = {
 
   search: async (req, res) => {
     try {
+      const userId = req.user.userId;
       // prepare pagination & sort conditions
       const { pagination, sortConditions } = renderPaginateSort(req.query);
 
       // prepare search conditions
-      const conditions = {};
+      const conditions = { userId };
 
       const data = await kycHistoryRepository.search(
         conditions,

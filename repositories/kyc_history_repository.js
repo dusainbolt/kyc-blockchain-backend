@@ -14,6 +14,7 @@ module.exports = {
   },
 
   search: function (conditions, pagination, sortConditions) {
+    console.log('sortConditions: ', sortConditions);
     return KycHistoryModel.find(conditions)
       .skip((pagination.page - 1) * pagination.pageSize)
       .limit(pagination.pageSize)

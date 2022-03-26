@@ -1,5 +1,6 @@
 const { KycModel } = require('../models');
 const ethers = require('ethers');
+const { KYC_STATUS } = require('../utils/consts');
 
 module.exports = {
   create: function (conditions) {
@@ -42,6 +43,10 @@ module.exports = {
       ['string', 'address'],
       [_uid, _address?.toLowerCase()]
     );
+  },
+
+  checkEditable: function (status) {
+    return [KYC_STATUS.EDITING, KYC_STATUS.REJECT].includes(status);
   },
 
   getCredential: function (body) {

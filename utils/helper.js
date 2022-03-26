@@ -52,7 +52,7 @@ exports.renderPaginateSort = (query) => {
     },
     sortConditions: query.sortBy
       ? this.convertConditionsSort(query.sortBy)
-      : { createdAt: consts.SORT.DESC },
+      : { updatedAt: consts.SORT.DESC },
   };
 };
 
