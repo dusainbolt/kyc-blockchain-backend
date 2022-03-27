@@ -23,6 +23,7 @@ module.exports = {
       const credentials = {
         name: req.body.name,
         apiKey,
+        avatar: req.body.avatar,
         userId: req.user.userId,
         encodeABI,
       };
