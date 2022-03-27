@@ -10,6 +10,16 @@ const ProjectSchema = new Schema(
       unique: true,
       trim: true,
     },
+    avatar: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    encodeABI: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     apiKey: {
       type: String,
       required: true,
@@ -20,6 +30,7 @@ const ProjectSchema = new Schema(
       default: DB_STATUS.INACTIVE,
     },
     userId: {
+      required: true,
       type: Schema.Types.ObjectId,
       ref: 'User',
     },

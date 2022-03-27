@@ -1,6 +1,5 @@
 const { body } = require('express-validator');
 const { ProjectModel } = require('../models');
-const web3 = require('web3');
 
 module.exports = {
   classname: 'ValidateProject',
@@ -12,8 +11,8 @@ module.exports = {
         .isEmpty()
         .withMessage('Missing name parameter.')
         .trim()
-        .isLength({ min: 4, max: 20 })
-        .withMessage('Name is between 4-20 characters.')
+        // .isLength({ min: 4, max: 20 })
+        // .withMessage('Name is between 4-20 characters.')
         .custom((value) => {
           return ProjectModel.findOne({ name: value }).then((project) => {
             if (project) {
@@ -21,18 +20,6 @@ module.exports = {
               return Promise.reject(msg);
             }
           });
-        }),
-
-      body('userAddress')
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage('Missing userAddress parameter.')
-        .custom((value) => {
-          const isAdress = web3.utils.isAddress(value);
-          return isAdress
-            ? Promise.resolve(true)
-            : Promise.reject('Invalid address');
         }),
     ];
   },

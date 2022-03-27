@@ -30,6 +30,8 @@ router.post(
   projectController.create
 );
 
+router.get('/project/search', auth, projectController.search);
+
 /* KYC APIs */
 router.post(
   '/kyc/create',

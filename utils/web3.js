@@ -12,6 +12,16 @@ class Web3Utils {
 
     return contractKYC.methods.createKYCMember(uid, signature).encodeABI();
   }
+
+  static encodeABIDeployProject(apiKey, signature) {
+    const contractKYC = new web3.eth.Contract(
+      kycABI.abi,
+      _config.contractAddress
+    );
+
+    return contractKYC.methods.createProject(apiKey, signature).encodeABI();
+  }
+
   static toCheckSum(address) {
     return web3.utils.toChecksumAddress(address);
   }

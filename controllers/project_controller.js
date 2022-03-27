@@ -1,32 +1,65 @@
 const { handlerError, handlerSuccess } = require('../utils/response_handler');
 const { v4: uuidv4 } = require('uuid');
 const projectRepository = require('../repositories/project_repository');
-const userRepository = require('../repositories/user_repository');
+const Web3Utils = require('../utils/web3');
+const kyc_repository = require('../repositories/kyc_repository');
+const { renderPaginateSort, paginationGenerator } = require('../utils/helper');
 
 module.exports = {
   classname: 'ProjectController',
 
   create: async (req, res) => {
     try {
-      // find user
-      const user = await userRepository.findOne({
-        address: req.body.userAddress,
-      });
-      // check user exist
-      if (!user) {
-        return handlerError(req, res, res.__('USER_NOT_EXIST'));
-      }
       // create apikey for project
       const apiKey = uuidv4();
       // prepare to create project
+      const messageHash = kyc_repository.getCreateKYCMessageHash(
+        apiKey,
+        req.user.address
+      );
+
+      const encodeABI = Web3Utils.encodeABIDeployProject(apiKey, messageHash);
+
       const credentials = {
         name: req.body.name,
-        apiKey: apiKey,
-        userId: req.user._id,
+        apiKey,
+        userId: req.user.userId,
+        encodeABI,
       };
+
       // create user
       const result = await projectRepository.create(credentials);
       return handlerSuccess(req, res, result, res.__('REGISTER_SUCCESS'));
+    } catch (error) {
+      _logger.error(new Error(error));
+      return handlerError(req, res, error.message);
+    }
+  },
+
+  search: async (req, res) => {
+    try {
+      const userId = req.user.userId;
+      // prepare pagination & sort conditions
+      const { pagination, sortConditions } = renderPaginateSort(req.query);
+
+      // prepare search conditions
+      const conditions = { userId };
+
+      const data = await projectRepository.search(
+        conditions,
+        pagination,
+        sortConditions
+      );
+
+      const projectCount = await projectRepository.count(conditions);
+      const paging = paginationGenerator(pagination, projectCount);
+
+      return handlerSuccess(
+        req,
+        res,
+        { data, paging },
+        res.__('RETRIEVE_SUCCESS')
+      );
     } catch (error) {
       _logger.error(new Error(error));
       return handlerError(req, res, error.message);
