@@ -20,9 +20,18 @@ const ProjectSchema = new Schema(
       trim: true,
       required: true,
     },
+    encodeShareKycABI: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     apiKey: {
       type: String,
       required: true,
+    },
+    projectIndex: {
+      type: Number,
+      default: -1,
     },
     status: {
       type: Number,

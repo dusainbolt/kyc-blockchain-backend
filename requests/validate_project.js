@@ -1,5 +1,6 @@
-const { body } = require('express-validator');
+const { body, query } = require('express-validator');
 const { ProjectModel } = require('../models');
+const ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
   classname: 'ValidateProject',
@@ -24,37 +25,20 @@ module.exports = {
     ];
   },
 
-  // update: () => {
-  //   return [
-  //     body('id')
-  //       .not()
-  //       .isEmpty()
-  //       .withMessage('Missing id parameter.')
-  //       .custom((value) => {
-  //         if (!ObjectID.isValid(value)) {
-  //           const msg = 'Invalid id.';
-  //           return Promise.reject(msg);
-  //         } else {
-  //           return Promise.resolve(true);
-  //         }
-  //       }),
-  //   ];
-  // },
-
-  // retrieve: () => {
-  //   return [
-  //     query('id')
-  //       .not()
-  //       .isEmpty()
-  //       .withMessage('Missing id parameter.')
-  //       .custom((value) => {
-  //         if (!ObjectID.isValid(value)) {
-  //           const msg = 'Invalid id.';
-  //           return Promise.reject(msg);
-  //         } else {
-  //           return Promise.resolve(true);
-  //         }
-  //       }),
-  //   ];
-  // },
+  retrieve: () => {
+    return [
+      query('id')
+        .not()
+        .isEmpty()
+        .withMessage('Missing id parameter.')
+        .custom((value) => {
+          if (!ObjectID.isValid(value)) {
+            const msg = 'Invalid id.';
+            return Promise.reject(msg);
+          } else {
+            return Promise.resolve(true);
+          }
+        }),
+    ];
+  },
 };

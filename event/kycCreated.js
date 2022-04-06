@@ -6,7 +6,6 @@ const kycHistoryRepository = require('../repositories/kyc_history_repository');
 const { KYC_STATUS } = require('../utils/consts');
 
 async function projectCreated(event) {
-  console.log('event', event);
   try {
     const { userAddress, uid } = event?.returnValues;
     const user = await userRepository.findOne({ address: userAddress });

@@ -30,6 +30,13 @@ router.post(
   projectController.create
 );
 
+router.get(
+  '/project',
+  validateProject.retrieve(),
+  validate,
+  projectController.retrieve
+);
+
 router.get('/project/search', auth, projectController.search);
 
 /* KYC APIs */

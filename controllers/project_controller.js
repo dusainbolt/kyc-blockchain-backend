@@ -4,6 +4,7 @@ const projectRepository = require('../repositories/project_repository');
 const Web3Utils = require('../utils/web3');
 const kyc_repository = require('../repositories/kyc_repository');
 const { renderPaginateSort, paginationGenerator } = require('../utils/helper');
+const userRepository = require('../repositories/user_repository');
 
 module.exports = {
   classname: 'ProjectController',
@@ -18,7 +19,9 @@ module.exports = {
         req.user.address
       );
 
-      const encodeABI = Web3Utils.encodeABIDeployProject(apiKey, messageHash);
+      const signature = userRepository.signWithPrivateKey(messageHash);
+
+      const encodeABI = Web3Utils.encodeABIDeployProject(apiKey, signature);
 
       const credentials = {
         name: req.body.name,
@@ -67,30 +70,24 @@ module.exports = {
     }
   },
 
-  // retrieve: async (req, res, next) => {
-  //   // validate the input parameters
-  //   const validate = validateRouter(req);
+  retrieve: async (req, res) => {
+    // valid parameters
+    try {
+      // retrieve project record
+      const project = await projectRepository.findOne({
+        _id: req.query.id,
+      });
 
-  //   // handle the error, stop
-  //   if (validate) {
-  //     return handlerError(req, res, validate);
-  //   }
-
-  //   // valid parameters
-  //   try {
-  //     // retrieve project record
-  //     let project = await projectRepository.findOne({ _id: new ObjectID(req.query.id), adminId: req.user.userId });
-
-  //     if (project) {
-  //       return handlerSuccess(req, res, project, res.__('RETRIEVE_SUCCESS'));
-  //     } else {
-  //       return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
-  //     }
-  //   } catch (error) {
-  //     _logger.error(new Error(error));
-  //     return handlerError(req, res, error.message);
-  //   }
-  // },
+      if (project) {
+        return handlerSuccess(req, res, project, res.__('RETRIEVE_SUCCESS'));
+      } else {
+        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
+      }
+    } catch (error) {
+      _logger.error(new Error(error));
+      return handlerError(req, res, error.message);
+    }
+  },
 
   // update: async (req, res, next) => {
   //   // validate the input parameters
