@@ -4,6 +4,8 @@ const {
   userController,
   projectController,
   kycController,
+  kycHistoryController,
+  kycSharedController,
 } = require('../controllers');
 
 const { validateUser, validateProject, validateKyc } = require('../requests');
@@ -28,6 +30,15 @@ router.post(
   auth,
   projectController.create
 );
+
+router.get(
+  '/project',
+  validateProject.retrieve(),
+  validate,
+  projectController.retrieve
+);
+
+router.get('/project/search', auth, projectController.search);
 
 /* KYC APIs */
 router.post(
@@ -54,5 +65,11 @@ router.patch(
   authAdmin,
   kycController.confirmKyc
 );
+router.get('/kyc/request_deploy', auth, kycController.requestDeploy);
+
+/* KYC History APIs */
+router.get('/kyc-history/search', auth, kycHistoryController.search);
+/* KYC Shared APIs */
+router.get('/kyc-shared/search', auth, kycSharedController.search);
 
 module.exports = router;

@@ -23,7 +23,7 @@ module.exports = {
     if (user) {
       // Create token
       const token = jwt.sign(
-        { userId: user._id, adress: user.address, role: user.role },
+        { userId: user._id, address: user.address, role: user.role },
         process.env.JWT_SECRET,
         {
           expiresIn: process.env.EXPIRED_JWT_TOKEN,
@@ -121,7 +121,7 @@ module.exports = {
     const token = jwt.sign(
       {
         userId: credential._id,
-        adress: credential.address,
+        address: credential.address,
         role: credential.role,
       },
       process.env.JWT_SECRET,
@@ -135,5 +135,16 @@ module.exports = {
       token: token,
     };
     return user;
+  },
+
+  /**
+   * Return message signed by admin private key
+   *
+   * @param {string} message Message to sign
+   * @return {object} result Signed message
+   */
+  signWithPrivateKey: function (message) {
+    return web3.eth.accounts.sign(message, process.env.PRIVATE_KEY_ADMIN)
+      .signature;
   },
 };

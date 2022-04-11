@@ -1,6 +1,9 @@
 const { handlerError, handlerSuccess } = require('../utils/response_handler');
 const { v4: uuidv4 } = require('uuid');
 const projectRepository = require('../repositories/project_repository');
+const Web3Utils = require('../utils/web3');
+const kyc_repository = require('../repositories/kyc_repository');
+const { renderPaginateSort, paginationGenerator } = require('../utils/helper');
 const userRepository = require('../repositories/user_repository');
 
 module.exports = {
@@ -8,22 +11,26 @@ module.exports = {
 
   create: async (req, res) => {
     try {
-      // find user
-      const user = await userRepository.findOne({
-        address: req.body.userAddress,
-      });
-      // check user exist
-      if (!user) {
-        return handlerError(req, res, res.__('USER_NOT_EXIST'));
-      }
       // create apikey for project
       const apiKey = uuidv4();
       // prepare to create project
+      const messageHash = kyc_repository.getCreateKYCMessageHash(
+        apiKey,
+        req.user.address
+      );
+
+      const signature = userRepository.signWithPrivateKey(messageHash);
+
+      const encodeABI = Web3Utils.encodeABIDeployProject(apiKey, signature);
+
       const credentials = {
         name: req.body.name,
-        apiKey: apiKey,
-        userId: req.user._id,
+        apiKey,
+        avatar: req.body.avatar,
+        userId: req.user.userId,
+        encodeABI,
       };
+
       // create user
       const result = await projectRepository.create(credentials);
       return handlerSuccess(req, res, result, res.__('REGISTER_SUCCESS'));
@@ -33,30 +40,54 @@ module.exports = {
     }
   },
 
-  // retrieve: async (req, res, next) => {
-  //   // validate the input parameters
-  //   const validate = validateRouter(req);
+  search: async (req, res) => {
+    try {
+      const userId = req.user.userId;
+      // prepare pagination & sort conditions
+      const { pagination, sortConditions } = renderPaginateSort(req.query);
 
-  //   // handle the error, stop
-  //   if (validate) {
-  //     return handlerError(req, res, validate);
-  //   }
+      // prepare search conditions
+      const conditions = { userId };
 
-  //   // valid parameters
-  //   try {
-  //     // retrieve project record
-  //     let project = await projectRepository.findOne({ _id: new ObjectID(req.query.id), adminId: req.user.userId });
+      const data = await projectRepository.search(
+        conditions,
+        pagination,
+        sortConditions
+      );
 
-  //     if (project) {
-  //       return handlerSuccess(req, res, project, res.__('RETRIEVE_SUCCESS'));
-  //     } else {
-  //       return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
-  //     }
-  //   } catch (error) {
-  //     _logger.error(new Error(error));
-  //     return handlerError(req, res, error.message);
-  //   }
-  // },
+      const projectCount = await projectRepository.count(conditions);
+      const paging = paginationGenerator(pagination, projectCount);
+
+      return handlerSuccess(
+        req,
+        res,
+        { data, paging },
+        res.__('RETRIEVE_SUCCESS')
+      );
+    } catch (error) {
+      _logger.error(new Error(error));
+      return handlerError(req, res, error.message);
+    }
+  },
+
+  retrieve: async (req, res) => {
+    // valid parameters
+    try {
+      // retrieve project record
+      const project = await projectRepository.findOne({
+        _id: req.query.id,
+      });
+
+      if (project) {
+        return handlerSuccess(req, res, project, res.__('RETRIEVE_SUCCESS'));
+      } else {
+        return handlerError(req, res, res.__('UNABLE_TO_GET_INFO'));
+      }
+    } catch (error) {
+      _logger.error(new Error(error));
+      return handlerError(req, res, error.message);
+    }
+  },
 
   // update: async (req, res, next) => {
   //   // validate the input parameters

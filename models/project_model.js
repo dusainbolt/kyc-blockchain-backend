@@ -10,9 +10,28 @@ const ProjectSchema = new Schema(
       unique: true,
       trim: true,
     },
+    avatar: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    encodeABI: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    encodeShareKycABI: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     apiKey: {
       type: String,
       required: true,
+    },
+    projectIndex: {
+      type: Number,
+      default: -1,
     },
     status: {
       type: Number,
@@ -20,6 +39,7 @@ const ProjectSchema = new Schema(
       default: DB_STATUS.INACTIVE,
     },
     userId: {
+      required: true,
       type: Schema.Types.ObjectId,
       ref: 'User',
     },

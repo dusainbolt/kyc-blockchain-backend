@@ -1,4 +1,6 @@
 const { KycModel } = require('../models');
+const ethers = require('ethers');
+const { KYC_STATUS } = require('../utils/consts');
 
 module.exports = {
   create: function (conditions) {
@@ -34,6 +36,17 @@ module.exports = {
       .skip((pagination.page - 1) * pagination.pageSize)
       .limit(pagination.pageSize)
       .sort(sortConditions);
+  },
+
+  getCreateKYCMessageHash: function (_uid, _address) {
+    return ethers.utils.solidityKeccak256(
+      ['string', 'address'],
+      [_uid, _address?.toLowerCase()]
+    );
+  },
+
+  checkEditable: function (status) {
+    return [KYC_STATUS.EDITING, KYC_STATUS.REJECT].includes(status);
   },
 
   getCredential: function (body) {

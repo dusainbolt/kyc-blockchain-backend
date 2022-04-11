@@ -3,7 +3,7 @@
     "host": "mongodb://127.0.0.1:27017/kyc-platform",
     "infuraId": "26c92d2974e94a8eb48b08b7a15c001f",
     "chainId": 4,
-    "providerUrl": "ws://localhost:8545",
-    "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    "providerUrl": "wss://rinkeby.infura.io/ws/v3/565ba53dd573484da0eb2adc77968b97",
+    "contractAddress": "0xF6c6C1ccDB8Dd7BD424Ba9a4856DCDA5296Aed2a"
   }
 }

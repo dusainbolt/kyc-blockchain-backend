@@ -31,25 +31,10 @@ module.exports = {
     return ProjectModel.countDocuments(conditions);
   },
 
-  search: function (conditions, pagination) {
+  search: function (conditions, pagination, sortConditions) {
     return ProjectModel.find(conditions)
       .skip((pagination.page - 1) * pagination.pageSize)
       .limit(pagination.pageSize)
-      .sort({ createdAt: -1 });
+      .sort(sortConditions);
   },
-
-  // validateProject: async function (userId, projectId) {
-  //   try {
-  //     const user = await UserModel.findOne({ _id: userId });
-  //     const index = user.projects.indexOf(projectId);
-  //     if (index > -1) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (error) {
-  //     _logger.error(new Error(error));
-  //     return false;
-  //   }
-  // },
 };

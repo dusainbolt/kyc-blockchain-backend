@@ -1,5 +1,4 @@
 const {
-  validateRouter,
   renderPaginateSort,
   paginationGenerator,
   renderKeyCondition,
@@ -7,7 +6,10 @@ const {
 const { handlerSuccess, handlerError } = require('../utils/response_handler');
 const { KYC_STATUS } = require('../utils/consts');
 const kycRepository = require('../repositories/kyc_repository');
+const userRepository = require('../repositories/user_repository');
 const kycHistoryRepository = require('../repositories/kyc_history_repository');
+const IpfsHelper = require('../utils/ipfs');
+const Web3Utils = require('../utils/web3');
 
 module.exports = {
   classname: 'KycController',
@@ -58,7 +60,7 @@ module.exports = {
       //check status kyc
       const kyc = await kycRepository.findOne({ userId });
 
-      if (!(kyc.status == KYC_STATUS.EDITING)) {
+      if (!kycRepository.checkEditable(kyc.status)) {
         return handlerError(req, res, res.__('UNABLE_TO_UPDATE'));
       }
       // prepare to update kyc
@@ -112,7 +114,7 @@ module.exports = {
       });
 
       // check status kyc
-      if (kyc.status != KYC_STATUS.EDITING) {
+      if (!kycRepository.checkEditable(kyc.status)) {
         return handlerError(req, res, res.__('UNABLE_TO_REQUEST'));
       }
       // update status kyc
@@ -131,7 +133,7 @@ module.exports = {
         kycHistoryRepository.create(creKycHistory),
       ]);
 
-      return handlerSuccess(req, res, true, res.__('REQUEST_SUCCESS'));
+      return handlerSuccess(req, res, kyc, res.__('REQUEST_SUCCESS'));
     } catch (error) {
       _logger.error(new Error(error));
       return handlerError(req, res, error.message);
@@ -163,7 +165,56 @@ module.exports = {
         kycHistoryRepository.create(creKycHistory),
       ]);
 
-      return handlerSuccess(req, res, true, res.__('REQUEST_SUCCESS'));
+      return handlerSuccess(req, res, kyc, res.__('REQUEST_SUCCESS'));
+    } catch (error) {
+      _logger.error(new Error(error));
+      return handlerError(req, res, error.message);
+    }
+  },
+
+  requestDeploy: async (req, res) => {
+    try {
+      const userId = req.user.userId;
+      // retrieve kyc record
+      const kyc = await kycRepository.findOne({
+        userId,
+      });
+
+      const history = await kycHistoryRepository.findOne({
+        kycId: kyc._id,
+        userId,
+        status: KYC_STATUS.RECEIVE_ABI_CODE,
+      });
+
+      let encodeABI = '';
+      if (!history) {
+        const added = await IpfsHelper.add(JSON.stringify(kyc));
+
+        const messageHash = kycRepository.getCreateKYCMessageHash(
+          added.path,
+          req.user.address
+        );
+
+        const signature = userRepository.signWithPrivateKey(messageHash);
+
+        encodeABI = Web3Utils.encodeABIDeploy(added.path, signature);
+
+        const creKycHistory = {
+          kycId: kyc._id,
+          userId,
+          status: KYC_STATUS.RECEIVE_ABI_CODE,
+          message: encodeABI,
+        };
+
+        await kycHistoryRepository.create(creKycHistory);
+      }
+
+      return handlerSuccess(
+        req,
+        res,
+        encodeABI || history.message,
+        res.__('REQUEST_SUCCESS')
+      );
     } catch (error) {
       _logger.error(new Error(error));
       return handlerError(req, res, error.message);

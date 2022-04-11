@@ -3,4 +3,5 @@ module.exports = {
   ProjectModel: require('./project_model'),
   KycModel: require('./kyc_model'),
   KycHistoryModel: require('./kyc_history_model'),
+  kycSharedModel: require('./kyc_share_model'),
 };

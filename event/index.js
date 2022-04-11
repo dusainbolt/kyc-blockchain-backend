@@ -1,6 +1,7 @@
 const Web3 = require('web3');
 const projectCreated = require('./projectCreated');
-
+const kycCreated = require('./kycCreated');
+const KycShared = require('./kycShared ');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.json')[env];
 
@@ -8,7 +9,7 @@ const ABIJson = require('../contracts/KYCPlatform.json');
 
 const contractAddress = config.contractAddress;
 
-const web3 = new Web3('ws://localhost:8545');
+const web3 = new Web3(config.providerUrl);
 
 const contractKYC = new web3.eth.Contract(ABIJson.abi, contractAddress);
 
@@ -16,8 +17,9 @@ const options = {
   filter: {
     value: [],
   },
-  fromBlock: 'latest', //Number || "earliest" || "pending" || "latest"
-  toBlock: 'latest',
+  // fromBlock: 0,
+  // fromBlock: 'latest', //Number || "earliest" || "pending" || "latest"
+  // toBlock: 'latest',
 };
 
 function eventListener() {
@@ -27,5 +29,22 @@ function eventListener() {
     .on('changed', (changed) => console.log(changed))
     .on('error', (err) => console.log('Error', err))
     .on('connected', (str) => console.log(str));
+  contractKYC.events
+    .KycCreated(options)
+    .on('data', kycCreated)
+    .on('changed', (changed) => console.log(changed))
+    .on('error', (err) => console.log('Error', err))
+    .on('connected', (str) => console.log(str));
+  contractKYC.events
+    .KycShared(options)
+    .on('data', KycShared)
+    .on('changed', (changed) => console.log(changed))
+    .on('error', (err) => console.log('Error', err))
+    .on('connected', (str) => console.log(str));
 }
 module.exports = eventListener;
+// "providerUrl": "wss://rinkeby.infura.io/ws/v3/565ba53dd573484da0eb2adc77968b97",
+// "contractAddress": "0xF6c6C1ccDB8Dd7BD424Ba9a4856DCDA5296Aed2a"
+
+// "providerUrl": "ws://localhost:8545",
+// "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"

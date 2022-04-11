@@ -1,20 +1,16 @@
-const { KycHistoryModel } = require('../models');
+const { kycSharedModel } = require('../models');
 
 module.exports = {
   create: function (conditions) {
-    return KycHistoryModel.create(conditions);
+    return kycSharedModel.create(conditions);
   },
-
-  findOne: function (conditions) {
-    return KycHistoryModel.findOne(conditions);
-  },
-
   count: function (conditions) {
-    return KycHistoryModel.countDocuments(conditions);
+    return kycSharedModel.countDocuments(conditions);
   },
-
   search: function (conditions, pagination, sortConditions) {
-    return KycHistoryModel.find(conditions)
+    return kycSharedModel
+      .find(conditions)
+      .populate({ path: 'projectId', select: 'avatar name' })
       .skip((pagination.page - 1) * pagination.pageSize)
       .limit(pagination.pageSize)
       .sort(sortConditions);
