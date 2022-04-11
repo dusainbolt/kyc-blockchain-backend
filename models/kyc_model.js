@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { KYC_STATUS, KYC_GENDER, ID_IMAGE } = require('../utils/consts');
+const { KYC_STATUS, KYC_GENDER } = require('../utils/consts');
 const Schema = mongoose.Schema;
 
 const KycSchema = new Schema(
@@ -59,12 +59,12 @@ const KycSchema = new Schema(
       enum: KYC_STATUS,
       required: true,
     },
-    identifierImage: [
-      {
-        type: { type: Number, enum: ID_IMAGE },
-        src: { type: String },
-      },
-    ],
+    identifierImage1: {
+      type: String,
+    },
+    identifierImage2: {
+      type: String,
+    },
   },
   { usePushEach: true, timestamps: true }
 );

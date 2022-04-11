@@ -64,6 +64,8 @@ module.exports = {
       birthday: body.birthday,
       address: body.address,
       nowAddress: body.nowAddress,
+      identifierImage1: body.identifierImage1,
+      identifierImage2: body.identifierImage2,
     };
   },
 };

@@ -13,6 +13,7 @@ const { validateUser, validateProject, validateKyc } = require('../requests');
 const auth = require('../middleware/auth');
 const authAdmin = require('../middleware/auth_admin');
 const validate = require('../middleware/validate');
+const authAPIKey = require('../middleware/auth_api_key');
 
 /* User APIs */
 router.post(
@@ -71,5 +72,12 @@ router.get('/kyc/request_deploy', auth, kycController.requestDeploy);
 router.get('/kyc-history/search', auth, kycHistoryController.search);
 /* KYC Shared APIs */
 router.get('/kyc-shared/search', auth, kycSharedController.search);
+router.get(
+  '/kyc-shared/check',
+  validateUser.checkShareKyc(),
+  validate,
+  authAPIKey,
+  kycSharedController.check
+);
 
 module.exports = router;

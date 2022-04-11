@@ -64,6 +64,16 @@ module.exports = {
         .not()
         .isEmpty()
         .withMessage('Missing nowAddress parameter.'),
+      body('identifierImage1')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing identifierImage1 parameter.'),
+      body('identifierImage2')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing identifierImage2 parameter.'),
     ];
   },
 
@@ -119,6 +129,16 @@ module.exports = {
         .not()
         .isEmpty()
         .withMessage('Missing nowAddress parameter.'),
+      body('identifierImage1')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing identifierImage1 parameter.'),
+      body('identifierImage2')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Missing identifierImage2 parameter.'),
     ];
   },
 

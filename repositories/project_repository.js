@@ -13,19 +13,14 @@ module.exports = {
     return ProjectModel.updateOne(id, { $set: newData });
   },
 
-  // findAndDelete:  function (conditions) {
-  //   const project = await ProjectModel.findOneAndDelete(conditions);
-
-  //   if (project) {
-  //     const user = await UserModel.findOne({ _id: conditions.adminId });
-  //     const index = user.projects.indexOf(project._id);
-  //     if (index > -1) {
-  //       user.projects.splice(index, 1); // 2nd parameter means remove one item only
-  //     }
-  //     user.save();
-  //   }
-  //   return project;
-  // },
+  verifyAPIKey: async function (apiKey) {
+    const project = await ProjectModel.findOne({ apiKey: apiKey });
+    if (project) {
+      return project;
+    } else {
+      return false;
+    }
+  },
 
   count: function (conditions) {
     return ProjectModel.countDocuments(conditions);

@@ -7,6 +7,9 @@ module.exports = {
   count: function (conditions) {
     return kycSharedModel.countDocuments(conditions);
   },
+  findOne: function (conditions) {
+    return kycSharedModel.findOne(conditions);
+  },
   search: function (conditions, pagination, sortConditions) {
     return kycSharedModel
       .find(conditions)
