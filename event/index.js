@@ -1,6 +1,7 @@
 const Web3 = require('web3');
 const projectCreated = require('./projectCreated');
 const kycCreated = require('./kycCreated');
+const KycShared = require('./kycShared ');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.json')[env];
 
@@ -34,10 +35,16 @@ function eventListener() {
     .on('changed', (changed) => console.log(changed))
     .on('error', (err) => console.log('Error', err))
     .on('connected', (str) => console.log(str));
+  contractKYC.events
+    .KycShared(options)
+    .on('data', KycShared)
+    .on('changed', (changed) => console.log(changed))
+    .on('error', (err) => console.log('Error', err))
+    .on('connected', (str) => console.log(str));
 }
 module.exports = eventListener;
 // "providerUrl": "wss://rinkeby.infura.io/ws/v3/565ba53dd573484da0eb2adc77968b97",
-// "contractAddress": "0x43Fd5B58646d033A5a31F1073Fd919c34Cdc7c72"
+// "contractAddress": "0xF6c6C1ccDB8Dd7BD424Ba9a4856DCDA5296Aed2a"
 
 // "providerUrl": "ws://localhost:8545",
 // "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"

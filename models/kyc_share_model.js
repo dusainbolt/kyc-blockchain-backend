@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const { KYC_STATUS } = require('../utils/consts');
 const Schema = mongoose.Schema;
 
-const KycHistorySchema = new Schema(
+const KycShareSchema = new Schema(
   {
     kycId: {
       type: Schema.Types.ObjectId,
@@ -13,16 +12,15 @@ const KycHistorySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    status: {
-      type: Number,
-      enum: KYC_STATUS,
-      required: true,
+    projectId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
     },
-    message: {
+    transactionHash: {
       type: String,
     },
   },
   { usePushEach: true, timestamps: { updatedAt: true, createdAt: false } }
 );
 
-module.exports = mongoose.model('KycHistory', KycHistorySchema);
+module.exports = mongoose.model('KycShare', KycShareSchema);

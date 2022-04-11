@@ -1,6 +1,7 @@
 module.exports = {
-  // UserModel: require('./user_model'),
-  // ProjectModel: require('./project_model'),
-  // KycModel: require('./kyc_model'),
-  // KycHistoryModel: require('./kyc_history_model'),
+  userRepository: require('./user_repository'),
+  projectRepository: require('./project_repository'),
+  kycRepository: require('./kyc_repository'),
+  kycHistoryRepository: require('./kyc_history_repository'),
+  kycSharedRepository: require('./kyc_shared_repository'),
 };
